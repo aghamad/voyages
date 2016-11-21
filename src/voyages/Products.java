@@ -21,7 +21,9 @@ import exceptions.ProductException;
 /**
  * Servlet implementation class Products
  */
-@WebServlet("/products/")
+@WebServlet(
+    name = "Products",
+    urlPatterns = {"/products"})
 public class Products extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
