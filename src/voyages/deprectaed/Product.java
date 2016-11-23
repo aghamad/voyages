@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.deprectaed;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,7 +15,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import exceptions.ProductException;
-
+/**
+ * 
+ * @author 201419001
+ * 
+ * DAO de Products a partir du fichier XML
+ * DEPRECATED
+ * 
+ * 
+ */
 public class Product {
     @SuppressWarnings("boxing")
     public static ArrayList<Product> getProducts(ArrayList<Integer> codes) throws ProductException {

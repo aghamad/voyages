@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,13 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.implementations.OrderDetailsModel;
+import voyages.models.implementations.OrderModel;
+
 /**
  * Servlet implementation class Orders
  */
 @WebServlet(
     name = "Orders",
     urlPatterns = {"/orders"})
-public class Orders extends HttpServlet {
+public class Orders extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
@@ -39,7 +44,7 @@ public class Orders extends HttpServlet {
             Long.parseLong(request.getParameter("orderId"));
             OrderModel orderModel;
             try {
-                orderModel = new OrderModel(Connexion.getConnexion());
+                orderModel = new OrderModel(getConnexion());
             } catch(
                 ClassNotFoundException
                 | SQLException e) {

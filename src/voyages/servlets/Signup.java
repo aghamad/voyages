@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.implementations.User;
+
 /**
  * Servlet implementation class Signup
  */
 @WebServlet(
     name = "Signup",
     urlPatterns = {"/signup"})
-public class Signup extends HttpServlet {
+public class Signup extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
@@ -34,7 +38,7 @@ public class Signup extends HttpServlet {
         User new_user;
 
         try {
-            new_user = new User(Connexion.getConnexion());
+            new_user = new User(getConnexion());
 
             new_user.Password = request.getParameter("Password");
             new_user.FirstName = request.getParameter("FirstName");

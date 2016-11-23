@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletConfig;
@@ -9,13 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import voyages.beans.Caddy;
+import voyages.models.implementations.ProductModel;
+
 /**
  * Servlet implementation class Cart
  */
 @WebServlet(
     name = "Cart",
     urlPatterns = {"/cart"})
-public class Cart extends HttpServlet {
+public class Cart extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";

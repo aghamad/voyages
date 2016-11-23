@@ -2,6 +2,11 @@
 package exceptions;
 
 public class DAOException extends Exception {
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
+
     public DAOException(String message,
         Throwable cause) {
         super(message,

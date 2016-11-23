@@ -1,11 +1,19 @@
 
-package voyages;
+package voyages.models.implementations;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.interfaces.IModel;
+import voyages.models.utils.DateParser;
 
 public class OrderModel implements IModel {
 
@@ -15,7 +23,7 @@ public class OrderModel implements IModel {
 
     public long CustomerId;
 
-    public String OrderDate;
+    public Date OrderDate;
 
     private static String columns = "OrderId, CustomerId, OrderDate";
 
@@ -89,7 +97,7 @@ public class OrderModel implements IModel {
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
-                    throw new SQLException("Creating user failed, no rows affected.");
+                    throw new SQLException("Creating order failed, no rows affected.");
                 }
 
                 try(
@@ -97,7 +105,7 @@ public class OrderModel implements IModel {
                     if(generatedKeys.next()) {
                         this.OrderId = generatedKeys.getLong(1);
                     } else {
-                        throw new SQLException("Creating user failed, no ID obtained.");
+                        throw new SQLException("Creating order failed, no ID obtained.");
                     }
                 }
                 return affectedRows;
@@ -168,14 +176,19 @@ public class OrderModel implements IModel {
         throw new DAOException("Not implemented");
 
     }
-
+    
     private OrderModel extract(ResultSet rset) throws DAOException {
         try {
             OrderModel order = new OrderModel(this);
             order.OrderId = rset.getInt("OrderId");
             order.CustomerId = rset.getInt("CustomerId");
-            //DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
-            order.OrderDate = rset.getString("OrderDate");
+
+            try {
+				order.OrderDate = DateParser.parse(rset.getString("OrderDate"));
+			} catch (ParseException e) {
+				order.OrderDate = null;
+				// On laisse OrderDate a null
+			}
 
             return order;
         } catch(SQLException sqlExcept) {

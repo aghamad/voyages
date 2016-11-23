@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.DAOException;
+import voyages.beans.Caddy;
+import voyages.beans.CaddyItem;
+import voyages.db.Connexion;
+import voyages.models.implementations.OrderDetailsModel;
+import voyages.models.implementations.OrderModel;
+import voyages.models.implementations.ProductModel;
+import voyages.models.implementations.User;
+
 /**
  * Servlet implementation class Checkout
  */
 @WebServlet(
     name = "Checkout",
     urlPatterns = {"/checkout"})
-public class Checkout extends HttpServlet {
+public class Checkout extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
@@ -49,7 +58,7 @@ public class Checkout extends HttpServlet {
         List<CaddyItem> items = caddy.getItems();
         OrderModel orderModel = null;
         try {
-            orderModel = new OrderModel(Connexion.getConnexion());
+            orderModel = new OrderModel(getConnexion());
         } catch(SQLException e) {
             throw new ServletException(e);
         } catch(ClassNotFoundException e) {

@@ -1,5 +1,7 @@
 
-package voyages;
+package voyages.beans;
+
+import voyages.models.implementations.ProductModel;
 
 public class CaddyItem {
     private ProductModel product;

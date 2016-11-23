@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.models.implementations;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.interfaces.IModel;
 
 public class User implements IModel {
     public long id;

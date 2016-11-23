@@ -1,4 +1,4 @@
-<%@ page import = "voyages.*" %>
+<%@ page import = "voyages.models.implementations.User" %>
 
 <!DOCTYPE HTML>
 <html>

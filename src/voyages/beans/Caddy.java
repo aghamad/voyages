@@ -1,7 +1,9 @@
 
-package voyages;
+package voyages.beans;
 
 import java.util.ArrayList;
+
+import voyages.models.implementations.ProductModel;
 
 public class Caddy {
 

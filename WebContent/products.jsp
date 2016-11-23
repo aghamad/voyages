@@ -1,53 +1,137 @@
 <%@ page language="java" contentType="text/html;charset=windows-1252" %>
 <%@ page import = "java.util.ArrayList" %>
-<%@ page import = "java.nio.file.Path" %>
-<%@ page import = "java.nio.file.Paths" %>
+<%@ page import = "java.util.List" %>
+<%@ page import = "voyages.models.implementations.ProductModel" %>
+<%@ page import = "voyages.models.implementations.User" %>
+<%@ page import = "voyages.db.Connexion" %>
+<%@ page import = "voyages.beans.Caddy" %>
+<%@ page import = "voyages.beans.CaddyItem" %>
 <%@ page import = "java.io.InputStream" %>
 <%@ page import = "java.io.FileInputStream" %>
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
-<%@ page import = "voyages.*" %>
 <%@ include file="head.jsp" %>
-
-    <%
-    boolean loginFail = false;
-    if(request.getAttribute("fail") != null) {
-        %>
-        <div class="alert alert-info">
-          <strong>Wrong credentials!/ <%= request.getParameter("email") %>, <%= request.getParameter("password") %> </strong> Please try again
+    <div class="container">
+    <div class="well well-sm">
+        <strong>Products</strong>
+        <div class="btn-group">
+            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
+                class="glyphicon glyphicon-th"></span>Grid</a>
         </div>
-        <%
-        loginFail = true;
-    }
-    
-    //out.print(System.getProperty("user.dir"));
-         
-    %>
+    </div>
 
+    
+    <div id="products" class="row list-group">
+    <%
+    ProductModel productModel = new ProductModel(Connexion.getOrSetUpConnexion(getServletContext()));
+    
+    List<ProductModel> initial_products = productModel.getAll();
+    List<ProductModel> vedettes = productModel.findVedettes();
+    
+    ArrayList<Integer> cartCodes = (ArrayList<Integer>) request.getSession().getAttribute("cart");
+    /*Caddy caddy = (Caddy) request.getSession().getAttribute("caddy");
+    
+    if(caddy == null)
+        caddy = new Caddy();
+        */
+    ArrayList<ProductModel> cart = new ArrayList<ProductModel> ();
+    //request.getSession().getAttribute("cart");
+    
+    /*if(cartCodes != null){
+        cart = productModel.getAll(Connexion.getConnexion());
+    } */
+    
+    ProductModel added = null;
+    if(request.getAttribute("addedProduct") instanceof ProductModel)
+        added = (ProductModel) request.getAttribute("addedProduct");
+    
+    List<ProductModel> products = initial_products;
+    
+    
+    if(added != null){
+		%>
+			<div class="alert alert-success">
+		'<%= added.Name %>' ajouté a votre panier !
+		</div>
+
+		<%
+	}
+        
+        if(vedettes.size() > 0) {
+        ProductModel vedette = vedettes.get(0);
+    %>
+    
+    <div class="jumbotron">
         <div class="container">
-         <div class="row">
-            <div class="col-sm-6 col-md-4 col-md-offset-4">
-                <h1 class="text-center login-title">Sign in</h1>
-                <div class="account-wall">
-                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                        alt="">
-                    <form class="form-signin" method=post>
-                    <input type="text" name=email class="form-control" placeholder="Email" required autofocus>
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Sign in</button>
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Remember me
-                    </label>
-                    <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                    <a href="signup" class="pull-right need-help">Sign up </a><span class="clearfix"></span>
-                    
-                    </form>
+            <div class=row>
+                <div class="col-md-8">
+                    <h1><%= vedette.Name %></h1>
+                    <p><%=vedette.Description %></p>
+                    <p>
+                    <b><%=vedette.Price%> $</b> seulement <br/>
+                    <form method=post>
+                                    <input type=hidden name=action value=addtocart />
+                                    <input type=hidden name=productCode value="<%= vedette.ProductId %>" />
+                                        <button type=submit class="btn btn-success btn-lg">Add to cart</button>
+                                        </form>
+                    </p>
                 </div>
-                <!--<a href="#" class="text-center new-account">Create an account </a>-->
+                <div class="col-md-4">
+                    <img style="width:350px" class="group list-group-image" src="images/<%= vedette.Image  %>"  />
+                </div>
             </div>
         </div>
-        </div>
+    </div>
 
+    
+    <%
+    }
+    for(int i = 0; i < products.size(); i++) {
+        ProductModel product = products.get(i);
+        //File picturefile = new File( getClass().getResource("/images/" + product.getImage()) );
+        //InputStream input = getClass().getResourceAsStream("/images/" + product.getImage());
+        //InputStream input = new FileInputStream(picturefile);
+        //byte[] bf = new byte[(int)picturefile.length()];
+        //input.read(bf);
+        
+    %><br/>
+        <div class="item col-xs-4 col-lg-4">
+            <div class="thumbnail">
+            <!---<img class="group list-group-image" src="data:image/gif;base64, product.getImageAsBase64()  "  />-->
+                <img class="group list-group-image" src="images/<%= product.Image  %>"  />
+                <div class="caption">
+                    <h4 class="group inner list-group-item-heading">
+                        <%= product.Name %> - <%= product.ProductId %></h4>
+                    <p class="group inner list-group-item-text">
+                        <%= product.Description %></p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p class="lead">
+                                <%= product.Price %>
+                                </p>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                        <form method=post>
+                        <input type=hidden name=action value=addtocart />
+                        <input type=hidden name=productCode value="<%= product.ProductId %>" />
+                            <button type=submit class="btn btn-success">Add to cart</button>
+                            </form>
+
+                        <% if(authenticatedUser !=null && authenticatedUser.IsAdmin) { %>
+                    <form method=post>
+                    <input type=hidden name=action value=sponsor />
+                        <input type=hidden name=productCode value="<%= product.ProductId %>" />
+                            <button type=submit class="btn btn-warning">Sponsor !</button>
+                            </form>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%
+        }
+        %>
+    </div>
 <%@ include file="foot.jsp" %>

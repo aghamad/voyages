@@ -19,7 +19,7 @@
   
  <servlet>
  	<servlet-name>Profile</servlet-name>
- 	<servlet-class>voyages.Profile</servlet-class>
+ 	<servlet-class>voyages.servlets.Profile</servlet-class>
  </servlet>
  <servlet-mapping>
  	<servlet-name>Profile</servlet-name>
@@ -28,7 +28,7 @@
  
  <servlet>
  	<servlet-name>Login</servlet-name>
- 	<servlet-class>voyages.Login</servlet-class>
+ 	<servlet-class>voyages.servlets.Login</servlet-class>
  </servlet>
  <servlet-mapping>
  	<servlet-name>Login</servlet-name>
@@ -37,7 +37,7 @@
  
  <servlet>
  	<servlet-name>Signup</servlet-name>
- 	<servlet-class>voyages.Signup</servlet-class>
+ 	<servlet-class>voyages.servlets.Signup</servlet-class>
  </servlet>
  <servlet-mapping>
  	<servlet-name>Signup</servlet-name>
@@ -46,7 +46,7 @@
  
  <servlet>
  	<servlet-name>Products</servlet-name>
- 	<servlet-class>voyages.Products</servlet-class>
+ 	<servlet-class>voyages.servlets.Products</servlet-class>
  </servlet>
  <servlet-mapping>
  	<servlet-name>Products</servlet-name>
@@ -55,7 +55,7 @@
  
  <servlet>
  	<servlet-name>Cart</servlet-name>
- 	<servlet-class>voyages.Cart</servlet-class>
+ 	<servlet-class>voyages.servlets.Cart</servlet-class>
  </servlet>
  <servlet-mapping>
  	<servlet-name>Cart</servlet-name>

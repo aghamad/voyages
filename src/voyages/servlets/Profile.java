@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletConfig;
@@ -9,13 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.DAOException;
+import voyages.models.implementations.User;
+
 /**
  * Servlet implementation class Profile
  */
 @WebServlet(
     name = "Profile",
     urlPatterns = {"/profile"})
-public class Profile extends HttpServlet {
+public class Profile extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";

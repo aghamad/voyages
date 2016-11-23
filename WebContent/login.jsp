@@ -6,7 +6,7 @@
 <%@ page import = "java.io.FileInputStream" %>
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
-<%@ page import = "voyages.*" %>
+<%@ page import = "voyages.models.implementations.*" %>
 <%@ include file="head.jsp" %>
 
     <%

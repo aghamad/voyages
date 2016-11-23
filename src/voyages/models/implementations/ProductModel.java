@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.models.implementations;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,8 +8,15 @@ import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.interfaces.IModel;
+import voyages.models.utils.DateParser;
 
 public class ProductModel implements IModel {
 
@@ -26,10 +33,14 @@ public class ProductModel implements IModel {
     public double Price;
 
     public int IsVedette = 0;
+    
+    public Date DateDebut;
+    
+    public Date DateFin;
+    
+    private static String columns = "ProductId, Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
 
-    private static String columns = "ProductId, Name, Description, Image, Price, IsVedette";
-
-    private static String non_id_columns = "Name, Description, Image, Price, IsVedette";
+    private static String non_id_columns = "Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
 
     private static String GET_BY_ID = "SELECT "
         + columns
@@ -47,7 +58,7 @@ public class ProductModel implements IModel {
         + non_id_columns
         + ") VALUES(?, ?, ?, ?, ?) ";
 
-    private static String UPDATE = "UPDATE Products SET Name = ?, Description = ?, Image = ?, Price = ?, IsVedette = ? WHERE ProductId = ?";
+    private static String UPDATE = "UPDATE Products SET Name = ?, Description = ?, Image = ?, Price = ?, IsVedette = ?, DateDebut = ?, DateFin = ? WHERE ProductId = ?";
 
     private static String GET_VEDETTES = "SELECT "
         + columns
@@ -105,6 +116,19 @@ public class ProductModel implements IModel {
             product.Image = rset.getString("Image");
             product.Price = rset.getDouble("Price");
             product.IsVedette = rset.getInt("IsVedette");
+            
+            
+            try {
+            	Date parsed = DateParser.parse(rset.getString("DateDebut"));
+				product.DateDebut = parsed;
+			} catch (ParseException e) {
+				System.err.println("Cannot parse DateDebut for Product # " + product.ProductId);
+			}
+            try {
+            	product.DateFin = DateParser.parse(rset.getString("DateFin"));
+            } catch (ParseException e) {
+            	System.err.println("Cannot parse DateFin for Product # " + product.ProductId);
+            }
 
             return product;
         } catch(SQLException sqlExcept) {
@@ -185,6 +209,8 @@ public class ProductModel implements IModel {
                     the_product.Price);
                 createStatement.setInt(5,
                     the_product.IsVedette);
+                createStatement.setString(6, dateFormatter.format(the_product.DateDebut));
+                createStatement.setString(7, dateFormatter.format(the_product.DateFin));
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -225,7 +251,10 @@ public class ProductModel implements IModel {
                     the_product.IsVedette);
                 createStatement.setLong(6,
                     the_product.ProductId);
-
+                createStatement.setString(7,
+                        dateFormatter.format(the_product.DateDebut));
+                createStatement.setString(8,
+                        dateFormatter.format(the_product.DateFin));
                 int affectedRows = createStatement.executeUpdate();
 
                 return affectedRows;

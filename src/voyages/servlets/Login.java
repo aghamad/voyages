@@ -1,5 +1,5 @@
 
-package voyages;
+package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.DAOException;
+import voyages.db.Connexion;
+import voyages.models.implementations.User;
+
 /**
  * Servlet implementation class Login
  */
 @WebServlet(
     name = "Login",
     urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+public class Login extends BaseServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
@@ -35,7 +39,7 @@ public class Login extends HttpServlet {
 
         Connexion connexion = null;
         try {
-            connexion = Connexion.getConnexion();
+            connexion = getConnexion();
         } catch(
             ClassNotFoundException
             | SQLException e) {
@@ -56,7 +60,7 @@ public class Login extends HttpServlet {
                 request.getSession(true).setAttribute("authUser",
                     authUser);
 
-                response.sendRedirect("/Commerce-Project1-context-root/products");
+                response.sendRedirect("products");
             } else {
                 int attempt = 0;
                 if(request.getAttribute("attempt") != null) {
