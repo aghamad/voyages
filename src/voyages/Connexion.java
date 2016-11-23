@@ -18,7 +18,7 @@ public class Connexion {
         // db parameters
         Class.forName("org.sqlite.JDBC");
 
-        String url = "jdbc:sqlite:/home/adam/normal_workspace/VoyagesInc/default.db";
+        String url = "jdbc:sqlite:default.db";
 
         // create a connection to the database
         conn = DriverManager.getConnection(url);
