@@ -37,7 +37,6 @@
 	$(function() {
 		$("#datescale").datepicker();
 	});
-	
 </script>
 
 

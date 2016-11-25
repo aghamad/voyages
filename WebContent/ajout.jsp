@@ -46,7 +46,6 @@
 	$( function() {
 		$("#datefin").datepicker();
 	});
-	
 </script>
 
 <%@ include file="foot.jsp" %>
