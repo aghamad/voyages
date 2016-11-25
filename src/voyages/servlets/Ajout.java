@@ -3,6 +3,7 @@ package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import exceptions.DAOException;
 import voyages.db.Connexion;
+import voyages.models.implementations.ProductModel;
 import voyages.models.implementations.User;
+import voyages.models.utils.DateParser;
 
 /**
  * Servlet implementation class Ajout d'un voyage
@@ -35,27 +38,20 @@ public class Ajout extends BaseServlet {
         HttpServletResponse response) throws ServletException,
         IOException {
         response.setContentType(CONTENT_TYPE);
+        ProductModel new_voyage;
         // Add le voyage dans la bd
-        
-        // redirect to form escale if success
-        request.getRequestDispatcher("/ajoutEscale.jsp").forward(request,
-                response);
-        
-        /*
-        User new_user;
-
         try {
-            new_user = new User(getConnexion());
+        	new_voyage = new ProductModel(getConnexion());
+        	
+        	new_voyage.Name = request.getParameter("Nom");
+        	new_voyage.Price = Double.parseDouble(request.getParameter("Price"));
+        	new_voyage.Image = "";
+        	new_voyage.Description = request.getParameter("Description");
+        	new_voyage.DateDebut = DateParser.parse(request.getParameter("Datedebut"));
+        	new_voyage.DateFin = DateParser.parse(request.getParameter("Datefin"));
 
-            new_user.Password = request.getParameter("Password");
-            new_user.FirstName = request.getParameter("FirstName");
-            new_user.LastName = request.getParameter("LastName");
-            new_user.Address = request.getParameter("Address");
-            new_user.Email = request.getParameter("Email");
-
-            new_user.create();
-            response.sendRedirect("/Commerce-Project1-context-root/login");
-
+        	new_voyage.create();
+	
         } catch(DAOException e) {
             request.setAttribute("error",
                 e);
@@ -67,10 +63,7 @@ public class Ajout extends BaseServlet {
         } catch(Exception e) {
             request.setAttribute("error",
                 e);
-        }
-        request.getRequestDispatcher("/signup.jsp").forward(request,
-            response);
-       */
+        }  
     }
 
     @Override
