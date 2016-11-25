@@ -41,6 +41,7 @@ public class Ajout extends BaseServlet {
         request.getRequestDispatcher("/ajoutEscale.jsp").forward(request,
                 response);
         
+        
         /*
         User new_user;
 

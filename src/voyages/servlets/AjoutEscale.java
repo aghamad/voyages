@@ -41,6 +41,7 @@ public class AjoutEscale extends BaseServlet {
         request.getRequestDispatcher("/ajoutescale.jsp").forward(request,
                 response);
         
+        
         /*
         User new_user;
 
