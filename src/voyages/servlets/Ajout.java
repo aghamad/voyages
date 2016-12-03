@@ -46,12 +46,14 @@ public class Ajout extends BaseServlet {
         	new_voyage.Name = request.getParameter("Nom");
         	new_voyage.Price = Double.parseDouble(request.getParameter("Price"));
         	new_voyage.Image = "";
+        	new_voyage.IsVedette = 0;
         	new_voyage.Description = request.getParameter("Description");
         	new_voyage.DateDebut = DateParser.parse(request.getParameter("Datedebut"));
         	new_voyage.DateFin = DateParser.parse(request.getParameter("Datefin"));
-
         	new_voyage.create();
-	
+        	
+        	// escale for every input        
+
         } catch(DAOException e) {
             request.setAttribute("error",
                 e);
@@ -64,6 +66,10 @@ public class Ajout extends BaseServlet {
             request.setAttribute("error",
                 e);
         }  
+        
+        request.getRequestDispatcher("/ajout.jsp").forward(request,
+                response);
+        
     }
 
     @Override

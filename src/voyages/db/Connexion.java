@@ -1,14 +1,11 @@
 
 package voyages.db;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
-
-import com.sun.glass.ui.GestureSupport;
 
 public class Connexion {
     private Connection connection = null;
