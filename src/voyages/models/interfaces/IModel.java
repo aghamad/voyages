@@ -11,6 +11,8 @@ public interface IModel {
     //private abstract IModel extract(ResultSet rset) throws DAOException;
     Connexion connexion = null;
     
+    public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    
     //public abstract List<String> getColumns();
     //public void IModel(Connexion connexion);
     public void setConnexion(Connexion conn);
