@@ -1,4 +1,3 @@
-
 package voyages.models.implementations;
 
 import java.io.ByteArrayOutputStream;
@@ -20,43 +19,63 @@ import voyages.models.utils.DateParser;
 
 public class EscaleModel implements IModel {
 
+
     private Connexion connexion = null;
 
     public long EscaleId;
-    
+
     public long CityId;
-    
-    public String Cityname;
-
-    public String Name;
-
-    public String Description;
-    
-    public Date DateEscale;
     
     public long ProductId;
     
-    private static String columns = "EscaleId, CityId, Cityname, Name, Description, DateEscale, ProductId";
+    public String NomActivite;
+    
+    public String DescriptionActivite;
 
-    private static String non_id_columns = "Cityname, Name, Description, DateEscale";
+    public boolean IsArrivee;
+    
+    public boolean IsDepart;
+    
+    public Date DateEscale;
+    
+    private String Image;
 
+    private static String columns = "EscaleId, CityId, IsDepart, NomActivite, DescriptionActivite, DateEscale, ProductId, Image, IsArrivee";
+
+    private static String insert_columns = "CityId, IsDepart, NomActivite, DescriptionActivite, DateEscale, ProductId, Image, IsArrivee";
+
+    private static String TABLE = "Escale";
+    
+    private static String GET_ALL = "SELECT "
+            + TABLE
+            + " FROM Orders";
     private static String GET_BY_ID = "SELECT "
         + columns
-        + " FROM Escale WHERE EscaleId = ?";
+        + " FROM " + TABLE + " WHERE EscaleId = ?";
 
-    private static String GET_ALL_BY_ID = "SELECT "
+    private static String FIND_BY_PRODUCT = "SELECT "
         + columns
-        + " FROM Escale WHERE EscaleId IN ?";
+        + " FROM " 
+        + TABLE 
+        + " WHERE ProductId = ?";
+    
+    private static String FIND_BY_CITY = "SELECT "
+            + columns
+            + " FROM " 
+            + TABLE 
+            + " WHERE CityId = ?";
+    
+    private static String FIND_BY_DATE_GREATER = "SELECT "
+            + columns
+            + " FROM " 
+            + TABLE 
+            + " WHERE DateEscale > ?"; 
 
-    private static String GET_ALL = "SELECT "
-        + columns
-        + " FROM Escale";
+    private static String CREATE = "INSERT INTO " + TABLE + "("
+        + insert_columns
+        + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
 
-    private static String CREATE = "INSERT INTO Escale ("
-        + non_id_columns
-        + ") VALUES(?, ?, ?, ?) ";
-
-    private static String UPDATE = "UPDATE Escale Set SET Cityname = ?, Name = ?, Description = ?, DateEscale = ? WHERE ProductId = ?";
+    private static String UPDATE = "UPDATE " + TABLE + " SET CityId = ?, IsDepart = ?, NomActivite = ?, DescriptionActivite = ?, DateEscale = ?, ProductId = ?, Image = ?, IsArrivee = ? WHERE EscaleId = ?";
 
     @Override
     public void setConnexion(Connexion conn) {
@@ -98,16 +117,83 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
+    
+    @Override
+    public int update(IModel model) throws DAOException {
+        try {
+            EscaleModel escale = (EscaleModel) model;
 
+            try(PreparedStatement updateStatement = getConnexion().getConnection().prepareStatement(UPDATE)) {
+            	 
+            	updateStatement.setLong(1, escale.CityId);
+            	updateStatement.setLong(2, escale.IsDepart ? 1 : 0);
+            	updateStatement.setString(3, escale.NomActivite);
+            	updateStatement.setString(4, escale.DescriptionActivite);
+            	updateStatement.setString(5, DateParser.format(escale.DateEscale));
+            	updateStatement.setLong(6, escale.ProductId);
+            	updateStatement.setString(7, escale.Image);
+            	updateStatement.setInt(8, escale.IsArrivee ? 1 : 0);
+            	updateStatement.setLong(9, escale.EscaleId);
+
+                int affectedRows = updateStatement.executeUpdate();
+                if(affectedRows == 0) {
+                    throw new SQLException("Updating Order Details failed, no rows affected.");
+                }
+
+                return affectedRows;
+            }
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public int create(IModel model) throws DAOException {
+        try {
+            EscaleModel escale = (EscaleModel) model;
+
+            try(
+                PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(CREATE)) {
+
+            	createStatement.setLong(1, escale.CityId);
+            	createStatement.setInt(2, escale.IsDepart ? 1 : 0);
+            	createStatement.setString(3, escale.NomActivite);
+            	createStatement.setString(4, escale.DescriptionActivite);
+            	createStatement.setString(5, DateParser.format(escale.DateEscale));
+            	createStatement.setLong(6, escale.ProductId);
+            	createStatement.setString(7, escale.Image);
+            	createStatement.setInt(8, escale.IsArrivee ? 1 : 0);
+            	
+            	int affectedRows = createStatement.executeUpdate();
+                if(affectedRows == 0) {
+                    throw new SQLException("Creating escale failed, no rows affected.");
+                }
+
+                try(
+                    ResultSet generatedKeys = createStatement.getGeneratedKeys()) {
+                    if(generatedKeys.next()) {
+                    	escale.EscaleId = generatedKeys.getLong(1);
+                    } else {
+                        throw new SQLException("Creating escale failed, no ID obtained.");
+                    }
+                }
+                return affectedRows;
+            }
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
     private EscaleModel extract(ResultSet rset) throws DAOException {
         try {
             EscaleModel escale = new EscaleModel(this);
-            escale.EscaleId = rset.getInt("EscaleId");
-            escale.CityId = rset.getInt("CityId");
-            escale.Cityname = rset.getString("Cityname");
-            escale.Name = rset.getString("Name");
-            escale.Description = rset.getString("Description");
-            escale.ProductId = rset.getInt("ProductId");
+            escale.EscaleId = rset.getLong("EscaleId");
+            escale.CityId = rset.getLong("CityId");
+            escale.IsArrivee = rset.getBoolean("IsArrivee");
+            escale.IsDepart = rset.getBoolean("IsDepart");
+            escale.Image = rset.getString("Image");
+            escale.ProductId = rset.getLong("ProductId");
+            escale.NomActivite = rset.getString("NomActivite");
+            escale.DescriptionActivite = rset.getString("DescriptionActivite");
             
             try {
             	Date parsed = DateParser.parse(rset.getString("DateEscale"));
@@ -122,15 +208,13 @@ public class EscaleModel implements IModel {
         }
     }
     
-    /* Continue de la */
-
     private List<EscaleModel> extractAll(ResultSet rset) throws DAOException {
-        List<EscaleModel> products = new ArrayList<>();
+        List<EscaleModel> escales = new ArrayList<>();
         try {
             while(rset.next()) {
-                products.add(extract(rset));
+            	escales.add(extract(rset));
             }
-            return products;
+            return escales;
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
@@ -149,257 +233,29 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
-
-    public List<EscaleModel> getAll(Array productIds) throws DAOException {
+    
+    public List<EscaleModel> findByProduct(ProductModel product) throws DAOException {
         try {
-            PreparedStatement getByIdStatement = getConnexion().getConnection().prepareStatement(EscaleModel.GET_ALL_BY_ID);
-            getByIdStatement.setArray(1,
-                productIds);
-
             try(
-                ResultSet rset = getByIdStatement.executeQuery()) {
-
-                return extractAll(rset);
-            }
-        } catch(SQLException e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
-    public int create(IModel model) throws DAOException {
-        try {
-            EscaleModel the_product = (EscaleModel) model;
-
-            try(
-                PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(CREATE)) {
-                createStatement.setString(1,
-                    the_product.Name);
-                createStatement.setString(2,
-                    the_product.Description);
-                createStatement.setString(3,
-                    the_product.Image);
-                createStatement.setDouble(4,
-                    the_product.Price);
-                createStatement.setInt(5,
-                    the_product.IsVedette);
-                createStatement.setString(6, dateFormatter.format(the_product.DateEscale));
-                createStatement.setString(7, dateFormatter.format(the_product.DateFin));
-
-                int affectedRows = createStatement.executeUpdate();
-                if(affectedRows == 0) {
-                    throw new SQLException("Creating user failed, no rows affected.");
-                }
+                PreparedStatement getByVoyageStatement = getConnexion().getConnection().prepareStatement(EscaleModel.FIND_BY_PRODUCT)) {
+            	getByVoyageStatement.setLong(1,
+                    product.ProductId);
 
                 try(
-                    ResultSet generatedKeys = createStatement.getGeneratedKeys()) {
-                    if(generatedKeys.next()) {
-                        this.ProductId = generatedKeys.getLong(1);
-                    } else {
-                        throw new SQLException("Creating user failed, no ID obtained.");
-                    }
+                    ResultSet rset = getByVoyageStatement.executeQuery()) {
+
+                    return extractAll(rset);
                 }
-                return affectedRows;
             }
         } catch(SQLException e) {
             throw new DAOException(e);
         }
     }
 
-    @Override
-    public int update(IModel model) throws DAOException {
-        try {
-            EscaleModel the_product = (EscaleModel) model;
-
-            try(
-                PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(UPDATE)) {
-                createStatement.setString(1,
-                    the_product.Name);
-                createStatement.setString(2,
-                    the_product.Description);
-                createStatement.setString(3,
-                    the_product.Image);
-                createStatement.setDouble(4,
-                    the_product.Price);
-                createStatement.setInt(5,
-                    the_product.IsVedette);
-                createStatement.setLong(6,
-                    the_product.ProductId);
-                createStatement.setString(7,
-                        dateFormatter.format(the_product.DateEscale));
-                createStatement.setString(8,
-                        dateFormatter.format(the_product.DateFin));
-                int affectedRows = createStatement.executeUpdate();
-
-                return affectedRows;
-            }
-        } catch(SQLException e) {
-            throw new DAOException(e);
-        }
-    }
-
-    public int bulk_unvedette() throws DAOException {
-        try(
-            PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(BULK_UNVEDETTE)) {
-
-            int affectedRows = createStatement.executeUpdate();
-
-            return affectedRows;
-        } catch(SQLException e) {
-            throw new DAOException(e);
-        }
-    }
 
     @Override
     public void delete(IModel model) throws DAOException {
         throw new DAOException("Not implemented");
-    }
-
-    public byte[] getImageAsBytes() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        /*
-        File file = new File("images/" + this.Image);
-        FileInputStream fis = null;
-        InputStream in = new FileInputStream(file);
-          */
-
-        try(
-            InputStream in = EscaleModel.class.getResourceAsStream("images/"
-                + this.Image)) {
-            if(in == null) {
-                throw new IOException("Cannot find resource images/"
-                    + this.Image);
-            }
-            byte[] buffer = new byte[4096];
-            for(;;) {
-                int nread = in.read(buffer);
-                if(nread <= 0) {
-                    break;
-                }
-                baos.write(buffer,
-                    0,
-                    nread);
-            }
-            byte[] data = baos.toByteArray();
-            /*new String(data, TODO WTF?
-                "Windows-1252");*/
-            byte[] asByteObjects = new byte[data.length];
-            for(int i = 0 ; i < data.length ; ++i) {
-                asByteObjects[i] = data[i];
-            }
-            return asByteObjects;
-        }
-    }
-
-    public static String encode(byte[] data) {
-        char[] tbl = {'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q',
-            'r',
-            's',
-            't',
-            'u',
-            'v',
-            'w',
-            'x',
-            'y',
-            'z',
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '+',
-            '/'};
-
-        StringBuilder buffer = new StringBuilder();
-        int pad = 0;
-        for(int i = 0 ; i < data.length ; i += 3) {
-
-            int b = ((data[i]
-                & 0xFF) << 16)
-                & 0xFFFFFF;
-            if(i
-                + 1 < data.length) {
-                b |= (data[i
-                    + 1]
-                    & 0xFF) << 8;
-            } else {
-                pad++;
-            }
-            if(i
-                + 2 < data.length) {
-                b |= (data[i
-                    + 2]
-                    & 0xFF);
-            } else {
-                pad++;
-            }
-
-            for(int j = 0 ; j < 4
-                - pad ; j++) {
-                int c = (b
-                    & 0xFC0000) >> 18;
-                buffer.append(tbl[c]);
-                b <<= 6;
-            }
-        }
-        for(int j = 0 ; j < pad ; j++) {
-            buffer.append("=");
-        }
-
-        return buffer.toString();
-    }
-
-    public String getImageAsBase64() throws IOException {
-        byte[] imgData = this.getImageAsBytes();
-        String imgDataBase64 = new String(encode(imgData));
-        return imgDataBase64;
     }
 
     @Override
@@ -428,9 +284,13 @@ public class EscaleModel implements IModel {
         EscaleModel the_model = (EscaleModel) model;
         this.ProductId = the_model.ProductId;
         this.Image = the_model.Image;
-        this.IsVedette = the_model.IsVedette;
-        this.Price = the_model.Price;
-        this.Name = the_model.Name;
-        this.Description = the_model.Description;
+        this.CityId = the_model.CityId;
+        this.DateEscale = the_model.DateEscale;
+        this.IsArrivee = the_model.IsArrivee;
+        this.IsDepart = the_model.IsDepart;
+        this.EscaleId = the_model.EscaleId;
+        this.DescriptionActivite = the_model.DescriptionActivite;
+        this.NomActivite = the_model.NomActivite;
     }
+
 }

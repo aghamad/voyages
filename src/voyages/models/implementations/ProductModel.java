@@ -210,8 +210,8 @@ public class ProductModel implements IModel {
                     the_product.Price);
                 createStatement.setInt(5,
                     the_product.IsVedette);
-                createStatement.setString(6, dateFormatter.format(the_product.DateDebut));
-                createStatement.setString(7, dateFormatter.format(the_product.DateFin));
+                createStatement.setString(6, DateParser.format(the_product.DateDebut));
+                createStatement.setString(7, DateParser.format(the_product.DateFin));
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -253,9 +253,9 @@ public class ProductModel implements IModel {
                 createStatement.setLong(6,
                     the_product.ProductId);
                 createStatement.setString(7,
-                        dateFormatter.format(the_product.DateDebut));
+                		DateParser.format(the_product.DateDebut));
                 createStatement.setString(8,
-                        dateFormatter.format(the_product.DateFin));
+                		DateParser.format(the_product.DateFin));
                 int affectedRows = createStatement.executeUpdate();
 
                 return affectedRows;

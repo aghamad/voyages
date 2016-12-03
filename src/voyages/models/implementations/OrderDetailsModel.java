@@ -117,7 +117,7 @@ public class OrderDetailsModel implements IModel {
             }
         } catch(SQLException e) {
             throw new DAOException(e);
-        }
+        }            
     }
 
     @Override
