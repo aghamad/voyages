@@ -41,8 +41,18 @@ public class ProductModel implements IModel {
     private static String columns = "ProductId, Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
 
     private static String non_id_columns = "Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
-
-    private static String FIND_BY_DEPARTURE_CITY = "SELECT " + columns + "  WHERE ";
+    
+    private static String TABLE = "Products";
+    private static String FIND_BY_DEPARTURE_CITY = "SELECT * FROM "
+    		+ TABLE 
+    		+ ", Escale "
+    		+ "WHERE Escale.ProductId = " + TABLE + ".ProductId  "
+    		+ "AND Escale.CityId = ? AND datetime(" + TABLE + ".DateDebut) > datetime(?) "
+    		+ " GROUP BY " + TABLE + ".ProductId";
+    
+    private static String FIND_BY_MIN_TRIP_START_DATE = "SELECT * FROM "
+    		+ TABLE 
+    		+ "WHERE datetime(" + TABLE + ".DateDebut) > datetime(?) ";
     
     private static String GET_BY_ID = "SELECT "
         + columns
@@ -236,6 +246,43 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
+    
+
+    public List<ProductModel> findByDepartureCity(CityModel city, Date tripStartDate) throws DAOException {
+        try {
+            PreparedStatement findByStatement = getConnexion().getConnection().prepareStatement(FIND_BY_DEPARTURE_CITY);
+            findByStatement.setLong(1,
+                city.CityId);
+            findByStatement.setString(2, 
+            		DateParser.format(tripStartDate));
+
+            try(
+                ResultSet rset = findByStatement.executeQuery()) {
+
+                return extractAll(rset);
+            }
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+    
+    public List<ProductModel> findByDepartureDateGreater(Date tripMinStartDate) throws DAOException {
+        try {
+            PreparedStatement findByStatement = getConnexion().getConnection().prepareStatement(FIND_BY_MIN_TRIP_START_DATE);
+            
+            findByStatement.setString(1, 
+            		DateParser.format(tripMinStartDate));
+
+            try(
+                ResultSet rset = findByStatement.executeQuery()) {
+
+                return extractAll(rset);
+            }
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
 
     @Override
     public int update(IModel model) throws DAOException {
