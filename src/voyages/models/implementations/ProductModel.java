@@ -58,7 +58,7 @@ public class ProductModel implements IModel {
 
     private static String CREATE = "INSERT INTO Products ("
         + non_id_columns
-        + ") VALUES(?, ?, ?, ?, ?) ";
+        + ") VALUES(?, ?, ?, ?, ?, ?, ?) ";
     
     private static String DELETE = "DELETE FROM Products WHERE ProductId = ?";
 
@@ -198,6 +198,7 @@ public class ProductModel implements IModel {
 
     @Override
     public int create(IModel model) throws DAOException {
+    	// Name, Description, Image, Price, IsVedette, DateDebut, DateFin
         try {
             ProductModel the_product = (ProductModel) model;
 

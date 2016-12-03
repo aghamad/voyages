@@ -1,7 +1,5 @@
-
 package voyages.models.interfaces;
 
-import java.text.SimpleDateFormat;
 
 import exceptions.DAOException;
 import voyages.db.Connexion;
@@ -34,5 +32,6 @@ public interface IModel {
     public void read() throws DAOException;
 
     //public List<IModel> getAll() throws DAOException;
+
 
 }

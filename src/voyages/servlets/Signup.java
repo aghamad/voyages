@@ -47,7 +47,13 @@ public class Signup extends BaseServlet {
             new_user.Email = request.getParameter("Email");
 
             new_user.create();
-            response.sendRedirect("/Commerce-Project1-context-root/login");
+            
+            request.setAttribute("fail",
+                    true);
+
+                request.getRequestDispatcher("/ajout.jsp").forward(request,
+                    response);
+
 
         } catch(DAOException e) {
             request.setAttribute("error",
