@@ -21,9 +21,9 @@ public interface IModel {
 
     public int create(IModel model) throws DAOException;
 
-    public void delete(IModel model) throws DAOException;
-
     public int update(IModel model) throws DAOException;
+    
+    public int delete(IModel model) throws DAOException;
 
     public void create() throws DAOException;
 

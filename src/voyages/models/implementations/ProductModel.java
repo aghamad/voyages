@@ -42,6 +42,8 @@ public class ProductModel implements IModel {
 
     private static String non_id_columns = "Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
 
+    private static String FIND_BY_DEPARTURE_CITY = "SELECT " + columns + "  WHERE ";
+    
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Products WHERE ProductId = ?";
@@ -57,6 +59,8 @@ public class ProductModel implements IModel {
     private static String CREATE = "INSERT INTO Products ("
         + non_id_columns
         + ") VALUES(?, ?, ?, ?, ?) ";
+    
+    private static String DELETE = "DELETE FROM Products WHERE ProductId = ?";
 
     private static String UPDATE = "UPDATE Products SET Name = ?, Description = ?, Image = ?, Price = ?, IsVedette = ?, DateDebut = ?, DateFin = ? WHERE ProductId = ?";
 
@@ -263,6 +267,26 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
+    
+    @Override
+    public int delete(IModel model) throws DAOException {
+        try {
+            ProductModel the_product = (ProductModel) model;
+
+            try(
+                PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(DELETE)) {
+                
+                createStatement.setLong(1,
+                    the_product.ProductId);
+                
+                int affectedRows = createStatement.executeUpdate();
+
+                return affectedRows;
+            }
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
 
     public int bulk_unvedette() throws DAOException {
         try(
@@ -276,10 +300,6 @@ public class ProductModel implements IModel {
         }
     }
 
-    @Override
-    public void delete(IModel model) throws DAOException {
-        throw new DAOException("Not implemented");
-    }
 
     public byte[] getImageAsBytes() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

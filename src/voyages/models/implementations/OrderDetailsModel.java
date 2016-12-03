@@ -151,7 +151,7 @@ public class OrderDetailsModel implements IModel {
     }
 
     @Override
-    public void delete(IModel model) throws DAOException {
+    public int delete(IModel model) throws DAOException {
         throw new DAOException("Not implemented");
     }
 

@@ -48,7 +48,7 @@ public class EscaleModel implements IModel {
     
     private static String GET_ALL = "SELECT "
             + TABLE
-            + " FROM Orders";
+            + " FROM " + TABLE;
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM " + TABLE + " WHERE EscaleId = ?";
@@ -59,6 +59,7 @@ public class EscaleModel implements IModel {
         + TABLE 
         + " WHERE ProductId = ?";
     
+    /*
     private static String FIND_BY_CITY = "SELECT "
             + columns
             + " FROM " 
@@ -69,7 +70,7 @@ public class EscaleModel implements IModel {
             + columns
             + " FROM " 
             + TABLE 
-            + " WHERE DateEscale > ?"; 
+            + " WHERE DateEscale > ?";*/
 
     private static String CREATE = "INSERT INTO " + TABLE + "("
         + insert_columns
@@ -254,7 +255,7 @@ public class EscaleModel implements IModel {
 
 
     @Override
-    public void delete(IModel model) throws DAOException {
+    public int delete(IModel model) throws DAOException {
         throw new DAOException("Not implemented");
     }
 

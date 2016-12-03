@@ -98,9 +98,8 @@ public class User implements IModel {
     }
 
     @Override
-    public void delete(IModel user) throws DAOException {
+    public int delete(IModel user) throws DAOException {
         throw new DAOException("Delete function not implemented yet.");
-        //int id = the_user.id;
     }
 
     @Override
