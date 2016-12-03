@@ -130,8 +130,7 @@ public class ProductModel implements IModel {
             product.Image = rset.getString("Image");
             product.Price = rset.getDouble("Price");
             product.IsVedette = rset.getInt("IsVedette");
-            
-            
+
             try {
             	Date parsed = DateParser.parse(rset.getString("DateDebut"));
 				product.DateDebut = parsed;
