@@ -84,7 +84,7 @@ public class Ajout extends BaseServlet {
     public void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        response.setContentType(CONTENT_TYPE);
+        response.setContentType(CONTENT_TYPE );
 
         request.getRequestDispatcher("/ajout.jsp").forward(request,
             response);
