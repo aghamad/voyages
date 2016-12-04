@@ -18,28 +18,45 @@
              <img class="profile-img" src="https://cdn4.iconfinder.com/data/icons/aviation-cobalt/512/avion_aviation_wings_flying_airlines_avia_airliner-128.png" alt="">
              
 	         <form class="form-signin" method=post>
-	             <input type="text" name=Nom class="form-control" placeholder="Nom" required autofocus>
-	             <input type="text" name=Price class="form-control" placeholder="Prix" required autofocus>
-	             <textarea name="Description" rows="4" cols="50" placeholder="Description" style="width:100%;"></textarea>
-	             <div class="input-group">
-		             <input type="text" name="Datedebut" id="datedebut" placeholder="Date début" style="width:100%;" required autofocus>
-		             <span class="input-group-addon">-></span>
-		             <input type="text" name="Datefin" id="datefin" placeholder="Date fin" style="width:100%;" required autofocus>
-	             </div>
-	                              
+	         	                              
 		         <!-- angular app -->  
 		         <div ng-app="myApp" ng-controller="MainCtrl">
-		         	<h3>Escale</h3>
-		         	<fieldset  data-ng-repeat="choice in choices">
-		         		<div class="input-group">
-				      	 <input type="text" ng-model="choice.name" name="CityName" placeholder="Nom de la ville">
-				      	 <input type="text" ng-model="choice.name" name="ActivitieName" placeholder="Nom de l'activité">
-				      	 <textarea name="DescriptionActivitie" rows="4" cols="50" placeholder="Description de l'activité" style="width:100%;"></textarea>
-				      	 <input type="text" name="DateEscale" id="dateEscale" placeholder="Date de l'escale">
-				      	 <button class="remove" ng-show="$last" ng-click="removeChoice()">Delete</button>
-				      	</div>
+		         
+		         	 <!-- Add voyage -->
+		             <input type="text" name=Nom class="form-control" placeholder="Nom" required autofocus>
+		             <input type="text" name=Price class="form-control" placeholder="Prix" required autofocus>
+		             <textarea name="Description" rows="4" cols="50" placeholder="Description" style="width:100%;"></textarea>
+		             
+		             <div class="input-group" >
+			             <input type="text" ng-model="dateStart" name="Datedebut" id="datedebut" placeholder="Date début" style="width:100%;" required autofocus>
+			             <span class="input-group-addon">-></span>
+			             <input type="text" name="Datefin" id="datefin" placeholder="Date fin" style="width:100%;" required autofocus>
+		             </div>
+	                               
+		         	<fieldset  data-ng-repeat="item in items track by $index">	
+		         		<h3>Escale # {{$index + 1}} </h3>
+		         		<div class="input-group" style="margin-bottom: 5%;">	         		
+		         		 <label for="CityName{{$index}}">Nom de la ville</label>
+		         		 <br />
+						 <input name="CityName{{$index}}" type="text" ng-model="item.CityName">						 
+						 <br />
+						 <label for="NomActivite{{$index}}">Nom de l'activité</label>
+						 <br />
+				      	 <input name="NomActivite{{$index}}" type="text" ng-model="item.NomActivite">				      	 
+				      	 <br />   	 
+				      	 <label for="DescriptionActivite{{$index}}">Description de l'activité</label>
+				      	 <textarea ng-model="item.DescriptionActivite" name="DescriptionActivite{{$index}}" rows="4" cols="50" style="width:100%;"></textarea>				      	 
+				      	 <br />
+				      	 <label for="DateEscale{{$index}}">Date de l'escale en format DD-MM-YYYY: </label>
+				      	 <br />
+				      	 <input name="DateEscale{{$index}}" id="EscaleDate" type="text" ng-model="item.DateEscale">
+				      	 <br />
+				      	 <button class="remove btn-danger" ng-show="$last" ng-click="removeItem($event)">Delete</button>
+				      	</div>		
 				   	</fieldset>  
-		       		<button class="addfields" ng-click="addNewChoice()">Add escale</button>  	   
+				   	
+		       		<button class="addfields" ng-click="addNewItem($event)">Add escale</button>  	
+		       		<input name="nbescales" ng-value="items.length" style="visibility: hidden;">   
 	          	</div> 
 	         	<!-- end of myapp  -->
 	         
@@ -54,31 +71,49 @@
  </div>
 
 <script type="text/javascript">
+
+	
 	$(function() {
-		$('#datedebut').datepicker();
+		$('#datedebut').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
 	  
 	$( function() {
-		$('#datefin').datepicker();
+		$('#datefin').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
-	
-	$(document).on('click', "#dateEscale", function(){
-		$('#dateEscale').datepicker();
-	});	
-	
+	  
 	var app = angular.module('myApp', []);
 	  app.controller('MainCtrl', function($scope) {
-
-	  $scope.choices = [];
+		  
+	  $scope.items = [];
 	  
-	  $scope.addNewChoice = function() {
-	    var newItemNo = $scope.choices.length + 1;
-	    $scope.choices.push({'id':'choice'+newItemNo});
+	  $scope.addNewItem = function(event) {
+		event.preventDefault();
+	    var newItemNo = $scope.items.length + 1;
+	    if (newItemNo == 1){
+	    	// Montreal par defaut
+		    $scope.items.push({
+		    	id: "item" + newItemNo,
+		    	CityName: "Montreal",
+		    	NomActivite: "Promenade",
+		    	DescriptionActivite: "Une petite promenade",
+		    	DateEscale: "DD-MM-YYY"
+		    });
+	    } else {
+		    $scope.items.push({
+		    	id: "item" + newItemNo,
+		    	CityName: "",
+		    	NomActivite: "",
+		    	DescriptionActivite: "",
+		    	DateEscale: ""
+		    });
+	    }
 	  };
 	    
-	  $scope.removeChoice = function() {
-	    var lastItem = $scope.choices.length - 1;
-	    $scope.choices.splice(lastItem);
+	  // Deletes the last item 
+	  $scope.removeItem = function(event) {
+		event.preventDefault();
+	    var lastItem = $scope.items.length - 1;
+	    $scope.items.splice(lastItem);
 	  };	
 	  
 	});
