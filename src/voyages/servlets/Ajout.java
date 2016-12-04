@@ -3,6 +3,7 @@ package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import exceptions.DAOException;
+import voyages.models.implementations.CityModel;
 import voyages.models.implementations.EscaleModel;
 import voyages.models.implementations.ProductModel;
 import voyages.models.utils.DateParser;
@@ -85,6 +87,16 @@ public class Ajout extends BaseServlet {
         HttpServletResponse response) throws ServletException,
         IOException {
         response.setContentType(CONTENT_TYPE );
+        
+        List<CityModel> cities = null;
+        try {
+			CityModel city_model = new CityModel(getConnexion());
+			cities = city_model.getAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        request.setAttribute("cities", cities); 
 
         request.getRequestDispatcher("/ajout.jsp").forward(request,
             response);

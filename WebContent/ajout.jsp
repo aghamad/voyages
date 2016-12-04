@@ -7,6 +7,7 @@
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
 <%@ page import = "voyages.models.implementations.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ include file="head.jsp" %>
 
@@ -35,21 +36,26 @@
 	                               
 		         	<fieldset  data-ng-repeat="item in items track by $index">	
 		         		<h3>Escale # {{$index + 1}} </h3>
-		         		<div class="input-group" style="margin-bottom: 5%;">	         		
-		         		 <label for="CityName{{$index}}">Nom de la ville</label>
+		         		<div class="input-group" style="margin-bottom: 5%;" >	         		
+		         		 <label for="SelCity{{$index}}">La ville:</label>
 		         		 <br />
-						 <input name="CityName{{$index}}" type="text" ng-model="item.CityName">						 
+					     <select class="form-control" name="SelCity{{$index}}" required autofocus>
+					   		<c:forEach items="${cities}" var="City">
+								<option value="${City.CityId}" >${City.Name}"</option>
+							</c:forEach>>
+					  	</select>
+					 
 						 <br />
 						 <label for="NomActivite{{$index}}">Nom de l'activité</label>
 						 <br />
-				      	 <input name="NomActivite{{$index}}" type="text" ng-model="item.NomActivite">				      	 
+				      	 <input name="NomActivite{{$index}}" type="text" ng-model="item.NomActivite" required autofocus>				      	 
 				      	 <br />   	 
 				      	 <label for="DescriptionActivite{{$index}}">Description de l'activité</label>
-				      	 <textarea ng-model="item.DescriptionActivite" name="DescriptionActivite{{$index}}" rows="4" cols="50" style="width:100%;"></textarea>				      	 
+				      	 <textarea ng-model="item.DescriptionActivite" name="DescriptionActivite{{$index}}" rows="4" cols="50" style="width:100%;" required autofocus></textarea>				      	 
 				      	 <br />
 				      	 <label for="DateEscale{{$index}}">Date de l'escale en format DD-MM-YYYY: </label>
 				      	 <br />
-				      	 <input name="DateEscale{{$index}}" id="EscaleDate" type="text" ng-model="item.DateEscale">
+				      	 <input name="DateEscale{{$index}}" id="EscaleDate" type="text" ng-model="item.DateEscale" required autofocus>
 				      	 <br />
 				      	 <button class="remove btn-danger" ng-show="$last" ng-click="removeItem($event)">Delete</button>
 				      	</div>		
@@ -60,7 +66,7 @@
 	          	</div> 
 	         	<!-- end of myapp  -->
 	         
-	         	<button class="btn btn-lg btn-primary btn-block" type="submit">Ajouter voyage</button>  
+	         	<button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-bottom:15%;">Ajouter voyage</button>  
   
 	      	</form> 
 	      	<!-- /endform -->
