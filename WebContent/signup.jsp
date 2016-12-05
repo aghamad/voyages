@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.io.InputStream" %>
 <%@ page import = "java.io.FileInputStream" %>
@@ -37,10 +37,22 @@
 							<label for=LastName>Last Name :</label>
 							<input class="form-control" type="text" name="LastName" id="FirstName" placeholder="Last name" required>
 						</div>
+						
+						
 						<div class="input-container">
 							<label for=Address>Address</label>
 							<input class="form-control" type="text" name="Address" id="Address" placeholder="Addres" required>
 						</div>
+						
+						<div class="input-container">
+							<label for=CityId>City</label>
+							<select name=CityId id=CityId class="form-control" required autofocus>
+						   		<c:forEach items="${cities}" var="City">
+									<option  value="${City.cityId}" >${City.name}</option>
+								</c:forEach>>
+						  	</select>
+					  	</div>
+						<br/>
 						<button class="btn btn-lg btn-primary btn-block" type="submit">
 							Sign up</button>
 						

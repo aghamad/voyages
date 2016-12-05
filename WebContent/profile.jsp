@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.io.InputStream" %>
 <%@ page import = "java.io.FileInputStream" %>
@@ -6,11 +6,17 @@
 <%@ page import = "java.util.Arrays" %>
 <%@ page import = "voyages.models.implementations.*" %>
 <%@ include file="head.jsp" %>
+
+
+<% if(authenticatedUser.IsAdmin) { %> 
+<%@ include file="admin_head.jsp" %>
+<% } %>
         <div class="container">
+        
          <div class="row">
          
          <%
-        //User authenticatedUser = (User) request.getAttribute("authUser");
+        
         if(request.getAttribute("error") != null){
          %>
          <%= request.getAttribute("error").toString() %>
@@ -40,6 +46,16 @@
 							<label for=Address>Address</label>
 							<input value='<%= authenticatedUser.Address %>' class="form-control" type="text" name="Address" id="Address" placeholder="Addres" required>
 						</div>
+						<div class="input-container">
+							<label for=CityId>City of Residence</label>
+							<select name=CityId id=CityId class="form-control" required autofocus>
+						   		<c:forEach items="${cities}" var="City">
+									<option selected="${City.cityId == authUser.cityId}" value="${City.cityId}" >${City.name}</option>
+								</c:forEach>>
+						  	</select>
+					  	</div>
+					  	
+					  	<br/>
 						<button class="btn btn-lg btn-primary btn-block" type="submit">
 							Save</button>
 						
@@ -50,6 +66,8 @@
             </div>
         </div>
 
-        </div>
+        <% if(authenticatedUser.IsAdmin ) { %> 
+<%@ include file="admin_foot.jsp" %>
+<% } %>
 <%@ include file="foot.jsp" %>
     

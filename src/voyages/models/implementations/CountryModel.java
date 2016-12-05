@@ -14,7 +14,7 @@ public class CountryModel implements IModel {
 
 	private Connexion connexion = null;
 
-    public String Name;
+	public String Name;
     
     public long CountryId;
     
@@ -25,7 +25,7 @@ public class CountryModel implements IModel {
     private static String TABLE = "Country";
     
     private static String GET_ALL = "SELECT "
-            + TABLE
+            + columns
             + " FROM "
             + TABLE;
     
@@ -217,4 +217,19 @@ public class CountryModel implements IModel {
         this.CountryId = the_model.CountryId;
         this.Name = the_model.Name;
     }
+    public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public long getCountryId() {
+		return CountryId;
+	}
+
+	public void setCountryId(long countryId) {
+		CountryId = countryId;
+	}
 }

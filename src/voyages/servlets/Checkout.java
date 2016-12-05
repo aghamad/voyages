@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.beans.Caddy;
 import voyages.beans.CaddyItem;
@@ -59,11 +60,7 @@ public class Checkout extends BaseServlet {
         OrderModel orderModel = null;
         try {
             orderModel = new OrderModel(getConnexion());
-        } catch(SQLException e) {
-            throw new ServletException(e);
-        } catch(ClassNotFoundException e) {
-            throw new ServletException(e);
-        } catch(Exception e) {
+        } catch(ConnexionException e) {
             throw new ServletException(e);
         }
 

@@ -17,7 +17,9 @@ public class User implements IModel {
 
     public String Email;
 
-    public String Password;
+    public long CityId;
+
+	public String Password;
 
     public String FirstName;
 
@@ -27,9 +29,9 @@ public class User implements IModel {
 
     public boolean IsAdmin = false;
 
-    private static String columns = "id, Email, Password, FirstName, LastName, Address, IsAdmin";
+    private static String columns = "id, Email, Password, FirstName, LastName, Address, IsAdmin, CityId";
 
-    private static String non_id_columns = "Email, Password, FirstName, LastName, Address, IsAdmin";
+    private static String non_id_columns = "Email, Password, FirstName, LastName, Address, IsAdmin, CityId";
 
     private static String GET_USERS = "SELECT "
         + columns
@@ -38,14 +40,18 @@ public class User implements IModel {
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Users WHERE id = ?";
+    
+    private static String GET_BY_CITY = "SELECT "
+            + columns
+            + " FROM Users WHERE CityId = ?";
 
     private static String GET_BY_EMAIL_PASSWORD = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
 
     private static String CREATE = "INSERT INTO Users ("
         + non_id_columns
-        + ") VALUES(?, ?, ?, ?, ?) ";
+        + ") VALUES(?, ?, ?, ?, ?, ?, ?) ";
 
-    private static String UPDATE = "UPDATE Users SET Email = ?, Password = ?, FirstName = ?, LastName = ?, Address = ?, IsAdmin = ? WHERE id = ?";
+    private static String UPDATE = "UPDATE Users SET Email = ?, Password = ?, FirstName = ?, LastName = ?, Address = ?, IsAdmin = ?, CityId = ? WHERE id = ?";
 
     private Connexion connexion = null;
 
@@ -71,6 +77,17 @@ public class User implements IModel {
         return null;
     }
 
+    public CityModel getCity() throws DAOException {
+    	CityModel model = new CityModel(this);
+    	model.CityId = this.CityId;
+    	model.read();
+    	return model;
+    }
+    public List<OrderModel> getOrders() throws DAOException {
+    	OrderModel model = new OrderModel(this);
+    	return model.findByCustomer(this);
+    }
+    
     public User(Connexion connexion,
         String email,
         String password) {
@@ -90,6 +107,7 @@ public class User implements IModel {
             extracted.Address = rset.getString("Address");
             extracted.Password = rset.getString("Password");
             extracted.IsAdmin = rset.getBoolean("IsAdmin");
+            extracted.CityId = rset.getLong("CityId");
 
             return extracted;
         } catch(SQLException sqlExcept) {
@@ -188,6 +206,8 @@ public class User implements IModel {
                     the_user.Address);
                 createStatement.setBoolean(6,
                     the_user.IsAdmin);
+                createStatement.setLong(7, 
+                		the_user.CityId);
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -227,8 +247,11 @@ public class User implements IModel {
                     the_user.Address);
                 updateStatement.setBoolean(6,
                     the_user.IsAdmin);
-                updateStatement.setLong(7,
+                updateStatement.setLong(7, 
+                		the_user.CityId);
+                updateStatement.setLong(8,
                     the_user.id);
+                
 
                 return updateStatement.executeUpdate();
             }
@@ -267,5 +290,70 @@ public class User implements IModel {
         this.IsAdmin = the_model.IsAdmin;
         this.Password = the_model.Password;
         this.Email = the_model.Email;
+        this.CityId = the_model.CityId;
     }
+    
+
+    public long getCityId() {
+    	return CityId;
+    }
+    public void setCityId(long id) {
+    	this.CityId = id;
+    }
+    
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return Email;
+	}
+
+	public void setEmail(String email) {
+		Email = email;
+	}
+
+	public String getPassword() {
+		return Password;
+	}
+
+	public void setPassword(String password) {
+		Password = password;
+	}
+
+	public String getFirstName() {
+		return FirstName;
+	}
+
+	public void setFirstName(String firstName) {
+		FirstName = firstName;
+	}
+
+	public String getLastName() {
+		return LastName;
+	}
+
+	public void setLastName(String lastName) {
+		LastName = lastName;
+	}
+
+	public String getAddress() {
+		return Address;
+	}
+
+	public void setAddress(String address) {
+		Address = address;
+	}
+
+	public boolean isIsAdmin() {
+		return IsAdmin;
+	}
+
+	public void setIsAdmin(boolean isAdmin) {
+		IsAdmin = isAdmin;
+	}
 }

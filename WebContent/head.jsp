@@ -1,4 +1,6 @@
+<%@ page language="java" contentType="text/html;charset=utf-8" %>
 <%@ page import = "voyages.models.implementations.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML>
 <html>
@@ -12,7 +14,55 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <style>body { padding-top: 70px; }
+        <style>body { padding-top: 50px; }
+    body,html,.row-offcanvas {
+  height:100%;
+}
+
+
+#sidebar {
+  width: inherit;
+  min-width: 220px;
+  max-width: 220px;
+  background-color:#f5f5f5;
+  float: left;
+  height:100%;
+  position:relative;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+#main {
+  height:100%;
+  overflow:auto;
+}
+
+/*
+ * off Canvas sidebar
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+    width:calc(100% + 220px);
+  }
+    
+  .row-offcanvas-left
+  {
+    left: -220px;
+  }
+
+  .row-offcanvas-left.active {
+    left: 0;
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+  }
+}
 </style>
     </head>
     <body>
@@ -21,17 +71,17 @@
       
        
         <div class="navbar-header">
-            <div class="navbar-brand"><a href="products">Kiwi Inc.</a></div>
-            <span class="text-muted credit">
+            <div class="navbar-brand"><a href="<c:url value="/products"/>">Voyages Inc.</a></div>
+           <!--  <span class="text-muted credit">
             Active Users
-            </span>
+            </span> -->
         </div>
 
                 
                 
         <!-- DROPDOWN LOGIN STARTS HERE  -->
         <ul id="signInDropdown" class="nav navbar-nav navbar-right">
-          <li><a href="cart"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+          <li><a href="<c:url value="/cart"/>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 </a></li>
 <li><a href="orders"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 </a></li>
@@ -39,7 +89,7 @@
             User authenticatedUser = User.getAuthenticatedUser(request);
           if(authenticatedUser == null) {
 		%>
-                <a href="login" type="button" class="btn btn-default navbar-btn">Sign in</a>
+                <a href="<c:url value="/login"/>" type="button" class="btn btn-default navbar-btn">Sign in</a>
 <!--
           <li class="dropdown">
             <button href="login" type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-default navbar-btn dropdown-toggle"><i class="glyphicon glyphicon-user color-blue"></i> Login <span class="caret"></span></button>
@@ -80,7 +130,7 @@
           <%
         } if(authenticatedUser != null) {
             %>
-            <a href=profile><span class="glyphicon glyphicon-user"></span> <span class="navbar-text"> <%= authenticatedUser.FirstName %></span></a>
+            <a href=<c:url value="/profile"/>><span class="glyphicon glyphicon-user"></span> <span class="navbar-text"> <%= authenticatedUser.FirstName %></span></a>
             <%
         } %>
                 </li>
@@ -89,3 +139,4 @@
 		
       </div>
     </nav>
+    

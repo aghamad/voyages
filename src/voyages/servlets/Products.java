@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import exceptions.ConnexionException;
 import exceptions.DAOException;
 
 import java.sql.SQLException;
@@ -36,8 +37,6 @@ public class Products extends BaseServlet {
            //out.println("<p>The servlet has received a GET. This is the reply.</p>");
            out.println("</body></html>");
            out.close();
-           
-           
        }
         public void doPost(HttpServletRequest request, HttpServletResponse response ) throws ServletException,IOException {
             int code = Integer.parseInt( request.getParameter("productCode") );
@@ -50,9 +49,7 @@ public class Products extends BaseServlet {
            ProductModel productModel;
            try {
                productModel = new ProductModel(getConnexion());
-           } catch (ClassNotFoundException | SQLException e) {
-               throw new ServletException(e);
-           } catch (Exception e) {
+           } catch (ConnexionException e) {
                throw new ServletException(e);
            }
            productModel.ProductId = code;
@@ -113,7 +110,8 @@ public class Products extends BaseServlet {
             response.setContentType(CONTENT_TYPE);
         
             if(User.getAuthenticatedUser(request) == null) {
-                response.sendRedirect("login");
+                response.sendRedirect("/login");
+                
             } else {
                 request.setAttribute("authUser", User.getAuthenticatedUser(request) );
                 request.getRequestDispatcher("/products.jsp").forward(request, response);

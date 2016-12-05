@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.util.List" %>
 <%@ page import = "java.io.InputStream" %>

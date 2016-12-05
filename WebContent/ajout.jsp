@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.nio.file.Path" %>
 <%@ page import = "java.nio.file.Paths" %>
@@ -11,7 +11,8 @@
 
 <%@ include file="head.jsp" %>
 
- <div class="container">
+<%@ include file="admin_head.jsp" %>
+ 
   <div class="row">
      <div class="col-sm-6 col-md-4 col-md-offset-4">
          <h1 class="text-center login-title">Ajouter un voyage</h1>
@@ -41,7 +42,7 @@
 		         		 <br />
 					     <select class="form-control" name="SelCity{{$index}}" required autofocus>
 					   		<c:forEach items="${cities}" var="City">
-								<option value="${City.CityId}" >${City.Name}"</option>
+								<option value="${City.cityId}" >${City.name}</option>
 							</c:forEach>>
 					  	</select>
 					 
@@ -55,7 +56,7 @@
 				      	 <br />
 				      	 <label for="DateEscale{{$index}}">Date de l'escale en format DD-MM-YYYY: </label>
 				      	 <br />
-				      	 <input name="DateEscale{{$index}}" id="EscaleDate" type="text" ng-model="item.DateEscale" required autofocus>
+				      	 <input name="DateEscale{{$index}}" class=dateInput id="EscaleDate" type="text" ng-model="item.DateEscale" required autofocus>
 				      	 <br />
 				      	 <button class="remove btn-danger" ng-show="$last" ng-click="removeItem($event)">Delete</button>
 				      	</div>		
@@ -74,7 +75,8 @@
          </div>
      </div>
  </div>
- </div>
+ <%@ include file="admin_foot.jsp" %>
+ 
 
 <script type="text/javascript">
 
@@ -86,6 +88,8 @@
 	$( function() {
 		$('#datefin').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
+	
+	
 	  
 	var app = angular.module('myApp', []);
 	  app.controller('MainCtrl', function($scope) {
@@ -94,6 +98,8 @@
 	  
 	  $scope.addNewItem = function(event) {
 		event.preventDefault();
+		
+		
 	    var newItemNo = $scope.items.length + 1;
 	    if (newItemNo == 1){
 	    	// Montreal par defaut
@@ -113,6 +119,8 @@
 		    	DateEscale: ""
 		    });
 	    }
+	    $('.dateInput').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+		
 	  };
 	    
 	  // Deletes the last item 

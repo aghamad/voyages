@@ -24,7 +24,8 @@ public class ProductModel implements IModel {
 
     public long ProductId;
 
-    public String Name;
+
+	public String Name;
 
     public String Description;
 
@@ -47,8 +48,9 @@ public class ProductModel implements IModel {
     		+ TABLE 
     		+ ", Escale "
     		+ "WHERE Escale.ProductId = " + TABLE + ".ProductId  "
-    		+ "AND Escale.CityId = ? AND datetime(" + TABLE + ".DateDebut) > datetime(?) "
+    		+ "AND Escale.CityId = ? AND Escale.IsDepart = 1 AND datetime(" + TABLE + ".DateDebut) > datetime(?) "
     		+ " GROUP BY " + TABLE + ".ProductId";
+    
     
     private static String FIND_BY_MIN_TRIP_START_DATE = "SELECT * FROM "
     		+ TABLE 
@@ -516,6 +518,11 @@ public class ProductModel implements IModel {
     public void read() throws DAOException {
         this.copy(this.read(this));
     }
+    
+    public List<EscaleModel> getEscales() throws DAOException {
+    	EscaleModel model = new EscaleModel(this);
+    	return model.findByProduct(this);
+    }
 
     private void copy(IModel model) {
         ProductModel the_model = (ProductModel) model;
@@ -526,4 +533,68 @@ public class ProductModel implements IModel {
         this.Name = the_model.Name;
         this.Description = the_model.Description;
     }
+
+    public long getProductId() {
+		return ProductId;
+	}
+
+	public void setProductId(long productId) {
+		ProductId = productId;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public String getImage() {
+		return Image;
+	}
+
+	public void setImage(String image) {
+		Image = image;
+	}
+
+	public double getPrice() {
+		return Price;
+	}
+
+	public void setPrice(double price) {
+		Price = price;
+	}
+
+	public int getIsVedette() {
+		return IsVedette;
+	}
+
+	public void setIsVedette(int isVedette) {
+		IsVedette = isVedette;
+	}
+
+	public Date getDateDebut() {
+		return DateDebut;
+	}
+
+	public void setDateDebut(Date dateDebut) {
+		DateDebut = dateDebut;
+	}
+
+	public Date getDateFin() {
+		return DateFin;
+	}
+
+	public void setDateFin(Date dateFin) {
+		DateFin = dateFin;
+	}
 }

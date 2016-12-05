@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.nio.file.Path" %>
 <%@ page import = "java.nio.file.Paths" %>
@@ -34,6 +34,7 @@
                     <form class="form-signin" method=post>
                     <input type="text" name=email class="form-control" placeholder="Email" required autofocus>
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <br/>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">
                         Sign in</button>
                     <label class="checkbox pull-left">

@@ -3,6 +3,9 @@ package voyages.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.db.Connexion;
+import voyages.models.implementations.CityModel;
 import voyages.models.implementations.User;
 
 /**
@@ -58,9 +63,7 @@ public class Signup extends BaseServlet {
         } catch(DAOException e) {
             request.setAttribute("error",
                 e);
-        } catch(
-            ClassNotFoundException
-            | SQLException e) {
+        } catch(ConnexionException e) {
             request.setAttribute("error",
                 e);
         } catch(Exception e) {
@@ -73,10 +76,20 @@ public class Signup extends BaseServlet {
 
     @Override
     public void doGet(HttpServletRequest request,
-        HttpServletResponse response) throws ServletException,
-        IOException {
+        HttpServletResponse response) throws ServletException, IOException {
         response.setContentType(CONTENT_TYPE);
 
+        CityModel cityModel;
+        List<CityModel> cities = Collections.emptyList();
+        
+		try {
+			cityModel = new CityModel(getConnexion());
+			cities = cityModel.getAll();
+		} catch (ConnexionException|DAOException e) {
+			throw new ServletException(e);
+		}
+        
+        request.setAttribute("cities", cities);
         request.getRequestDispatcher("/signup.jsp").forward(request,
             response);
     }

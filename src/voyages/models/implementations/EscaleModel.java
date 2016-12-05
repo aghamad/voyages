@@ -38,7 +38,8 @@ public class EscaleModel implements IModel {
     
     public Date DateEscale;
     
-    private String Image;
+
+	private String Image;
 
     private static String columns = "EscaleId, CityId, IsDepart, NomActivite, DescriptionActivite, DateEscale, ProductId, Image, IsArrivee";
 
@@ -281,7 +282,7 @@ public class EscaleModel implements IModel {
         this.copy(this.read(this));
     }
 
-    private void copy(IModel model) {
+    public void copy(IModel model) {
         EscaleModel the_model = (EscaleModel) model;
         this.ProductId = the_model.ProductId;
         this.Image = the_model.Image;
@@ -293,5 +294,84 @@ public class EscaleModel implements IModel {
         this.DescriptionActivite = the_model.DescriptionActivite;
         this.NomActivite = the_model.NomActivite;
     }
+    
+
+    public CityModel getCity() throws DAOException {
+    	CityModel model = new CityModel(this);
+    	model.CityId = this.CityId;
+    	model.read();
+    	return model;
+    }
+    public long getEscaleId() {
+		return EscaleId;
+	}
+
+	public void setEscaleId(long escaleId) {
+		EscaleId = escaleId;
+	}
+
+	public long getCityId() {
+		return CityId;
+	}
+
+	public void setCityId(long cityId) {
+		CityId = cityId;
+	}
+
+	public long getProductId() {
+		return ProductId;
+	}
+
+	public void setProductId(long productId) {
+		ProductId = productId;
+	}
+
+	public String getNomActivite() {
+		return NomActivite;
+	}
+
+	public void setNomActivite(String nomActivite) {
+		NomActivite = nomActivite;
+	}
+
+	public String getDescriptionActivite() {
+		return DescriptionActivite;
+	}
+
+	public void setDescriptionActivite(String descriptionActivite) {
+		DescriptionActivite = descriptionActivite;
+	}
+
+	public boolean getIsArrivee() {
+		return IsArrivee;
+	}
+
+	public void setIsArrivee(boolean isArrivee) {
+		IsArrivee = isArrivee;
+	}
+
+	public boolean getIsDepart() {
+		return IsDepart;
+	}
+
+	public void setIsDepart(boolean isDepart) {
+		IsDepart = isDepart;
+	}
+
+	public Date getDateEscale() {
+		return DateEscale;
+	}
+
+	public void setDateEscale(Date dateEscale) {
+		DateEscale = dateEscale;
+	}
+
+	public String getImage() {
+		return Image;
+	}
+
+	public void setImage(String image) {
+		Image = image;
+	}
 
 }

@@ -1,7 +1,11 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.util.List" %>
+
+<%@ page import = "java.util.Date" %>
+<%@ page import = "java.util.Collections" %>
 <%@ page import = "voyages.models.implementations.ProductModel" %>
+<%@ page import = "voyages.models.implementations.CityModel" %>
 <%@ page import = "voyages.models.implementations.User" %>
 <%@ page import = "voyages.db.Connexion" %>
 <%@ page import = "voyages.beans.Caddy" %>
@@ -11,7 +15,8 @@
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
 <%@ include file="head.jsp" %>
-    <div class="container">
+    <div class="container" style="padding-top:30px">
+    <!-- 
     <div class="well well-sm">
         <strong>Products</strong>
         <div class="btn-group">
@@ -20,13 +25,31 @@
                 class="glyphicon glyphicon-th"></span>Grid</a>
         </div>
     </div>
-
+ 	-->
     
     <div id="products" class="row list-group">
     <%
     ProductModel productModel = new ProductModel(Connexion.getOrSetUpConnexion(getServletContext()));
     
-    List<ProductModel> initial_products = productModel.getAll();
+    
+    CityModel userCity = new CityModel(productModel);
+    userCity.CityId = authenticatedUser.getCityId();
+    userCity.read();
+    
+    
+    List<ProductModel> initial_products = Collections.emptyList();
+    String type = (String) request.getParameter("type");
+    if(type == null) type = "relevant";
+    if(type.equals("relevant")) {
+    	%> <a href="?type=all">Afficher tous les voyages</a><%
+    	initial_products = productModel.findByDepartureCity(userCity, new Date());	
+    }
+    if(type.equals("all")) {
+    	%> <a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : <%= userCity.getName()%> </a><%
+    	initial_products = productModel.getAll();	
+    }
+    
+    
     List<ProductModel> vedettes = productModel.findVedettes();
     
     ArrayList<Integer> cartCodes = (ArrayList<Integer>) request.getSession().getAttribute("cart");
@@ -60,6 +83,7 @@
         
         if(vedettes.size() > 0) {
         ProductModel vedette = vedettes.get(0);
+        request.setAttribute("vedette", vedette);
     %>
     
     <div class="jumbotron">
@@ -72,13 +96,16 @@
                     <b><%=vedette.Price%> $</b> seulement <br/>
                     <form method=post>
                                     <input type=hidden name=action value=addtocart />
-                                    <input type=hidden name=productCode value="<%= vedette.ProductId %>" />
+                                    <input type=hidden name=productCode value="${vedette.productId}" />
                                         <button type=submit class="btn btn-success btn-lg">Add to cart</button>
                                         </form>
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <img style="width:350px" class="group list-group-image" src="images/<%= vedette.Image  %>"  />
+                <a href='<c:url value="/products/detail/?id=${vedette.productId}" /> '>
+                    <img style="width:350px" class="group list-group-image" src="images/${ vedette.image } "  />
+                    
+                    </a>
                 </div>
             </div>
         </div>

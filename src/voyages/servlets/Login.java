@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.implementations.User;
@@ -41,10 +42,8 @@ public class Login extends BaseServlet {
         try {
             connexion = getConnexion();
         } catch(
-            ClassNotFoundException
-            | SQLException e) {
-            throw new ServletException(e);
-        } catch(Exception e) {
+            ConnexionException
+             e) {
             throw new ServletException(e);
         }
 

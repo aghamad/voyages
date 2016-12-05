@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.implementations.OrderDetailsModel;
@@ -46,8 +47,7 @@ public class Orders extends BaseServlet {
             try {
                 orderModel = new OrderModel(getConnexion());
             } catch(
-                ClassNotFoundException
-                | SQLException e) {
+                ConnexionException e) {
                 throw new ServletException(e);
             } catch(Exception e) {
                 throw new ServletException(e);

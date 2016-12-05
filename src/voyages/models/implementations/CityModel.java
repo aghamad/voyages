@@ -21,7 +21,8 @@ public class CityModel implements IModel {
     
     public String Name;
     
-    public long CountryId;
+
+	public long CountryId;
     
     private static String columns = "CityId, Name, CountryId";
 
@@ -30,7 +31,7 @@ public class CityModel implements IModel {
     private static String TABLE = "City";
     
     private static String GET_ALL = "SELECT "
-            + TABLE
+            + columns
             + " FROM " + TABLE;
     private static String GET_BY_ID = "SELECT "
         + columns
@@ -250,4 +251,29 @@ public class CityModel implements IModel {
         this.CountryId = the_model.CountryId;
         this.Name = the_model.Name;
     }
+    
+
+    public long getCityId() {
+		return CityId;
+	}
+
+	public void setCityId(long cityId) {
+		CityId = cityId;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public long getCountryId() {
+		return CountryId;
+	}
+
+	public void setCountryId(long countryId) {
+		CountryId = countryId;
+	}
 }

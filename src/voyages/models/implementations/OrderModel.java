@@ -33,7 +33,8 @@ public class OrderModel implements IModel {
         + columns
         + " FROM Orders";
 
-    private static String GET_BY_ID = "SELECT "
+
+	private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Orders WHERE OrderId = ?";
 
@@ -219,4 +220,35 @@ public class OrderModel implements IModel {
         this.OrderId = the_model.OrderId;
         this.OrderDate = the_model.OrderDate;
     }
+    
+    
+
+public List<OrderDetailsModel> getItems() throws DAOException {
+	OrderDetailsModel model = new OrderDetailsModel(this);
+	return model.findByOrder(this);
+	
+}
+    public long getOrderId() {
+		return OrderId;
+	}
+
+	public void setOrderId(long orderId) {
+		OrderId = orderId;
+	}
+
+	public long getCustomerId() {
+		return CustomerId;
+	}
+
+	public void setCustomerId(long customerId) {
+		CustomerId = customerId;
+	}
+
+	public Date getOrderDate() {
+		return OrderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		OrderDate = orderDate;
+	}
 }

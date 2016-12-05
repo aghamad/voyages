@@ -1,53 +1,138 @@
-<%@ page language="java" contentType="text/html;charset=windows-1252" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import = "java.util.ArrayList" %>
-<%@ page import = "java.nio.file.Path" %>
-<%@ page import = "java.nio.file.Paths" %>
+<%@ page import = "java.util.List" %>
+<%@ page import = "voyages.models.implementations.ProductModel" %>
+<%@ page import = "exceptions.DAOException" %>
+<%@ page import = "voyages.models.implementations.OrderModel" %>
+<%@ page import = "voyages.models.implementations.OrderDetailsModel" %>
+<%@ page import = "voyages.models.implementations.User" %>
+<%@ page import = "voyages.db.Connexion" %>
 <%@ page import = "java.io.InputStream" %>
 <%@ page import = "java.io.FileInputStream" %>
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
-<%@ page import = "voyages.models.implementations.*" %>
 <%@ include file="head.jsp" %>
+<div class=container>
+<div class=row>
+<%
 
-    <%
-    boolean loginFail = false;
-    if(request.getAttribute("fail") != null) {
-        %>
-        <div class="alert alert-info">
-          <strong>Wrong credentials!/ <%= request.getParameter("email") %>, <%= request.getParameter("password") %> </strong> Please try again
-        </div>
-        <%
-        loginFail = true;
-    }
+OrderModel orderModel = new OrderModel(Connexion.getConnexion());
+ProductModel productModel = new ProductModel(orderModel);
+OrderDetailsModel orderDetailsModel = new OrderDetailsModel(orderModel);
+
+User authUser = User.getAuthenticatedUser(request);
     
-    //out.print(System.getProperty("user.dir"));
-         
+if(authUser == null) {
     %>
+    <p>Cannot get a list of orders if the user is not connected</p>
+    <%
+}
+else {
+    List<OrderModel> pastOrders = null;
+    try {
+        pastOrders = orderModel.findByCustomer(authUser);
+    } catch(DAOException e) {
+        throw new ServletException(e);
+    }
+if(pastOrders.isEmpty()) {
+    out.print("<div class=jumbotron><div class=container><p>No orders yet.<br/>...<br/><br/><a href=products>Purchase</a> some fruits !</p></div></div>");
+} else {
+%>
+<a href="/Commerce-Project1-context-root/products" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+<%
+}
 
-        <div class="container">
-         <div class="row">
-            <div class="col-sm-6 col-md-4 col-md-offset-4">
-                <h1 class="text-center login-title">Sign in</h1>
-                <div class="account-wall">
-                    <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                        alt="">
-                    <form class="form-signin" method=post>
-                    <input type="text" name=email class="form-control" placeholder="Email" required autofocus>
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">
-                        Sign in</button>
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">
-                        Remember me
-                    </label>
-                    <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-                    <a href="signup" class="pull-right need-help">Sign up </a><span class="clearfix"></span>
-                    
-                    </form>
-                </div>
-                <!--<a href="#" class="text-center new-account">Create an account </a>-->
-            </div>
-        </div>
-        </div>
-
+for(int i = 0; i < pastOrders.size(); i++) {
+    OrderModel order = pastOrders.get(i);
+    List<OrderDetailsModel> items = orderDetailsModel.findByOrder(order);
+    %>
+    <h1>Order #<%= order.OrderId %></h1>
+ <table id="cart" class="table table-hover table-condensed">
+    				<thead>
+						<tr>
+							<th style="width:50%">Product</th>
+							<th style="width:10%">Price</th>
+							<th style="width:8%">Quantity</th>
+							<th style="width:22%" class="text-center">Subtotal</th>
+							<th style="width:10%"></th>
+						</tr>
+					</thead>
+					<tbody>
+<%
+	double total = 0;
+    for(int j = 0; j < items.size(); j++) {
+        OrderDetailsModel item = (OrderDetailsModel) items.get(j);
+        ProductModel product = new ProductModel(productModel);
+        product.ProductId = item.ProductId;
+        total += item.UnitPrice * item.Quantity;
+        product = (ProductModel) productModel.read(product);
+    
+    %>
+    <tr>
+    <td data-th="Product">
+			<div class="row">
+				<div class="col-sm-2 hidden-xs">
+					<!--<img style="width:100px" class="group list-group-image" src="data:image/gif;base64, product.getImageAsBase64()  " />-->
+                                        <img style="width:50px" class="group list-group-image" src="images/<%= product.Image  %>" />
+				</div>
+				<div class="col-sm-10">
+					<h4 class="nomargin">
+						<%= product.Name %>
+					</h4>
+					<p><%= product.Description %></p>
+				</div>
+			</div>
+		</td>
+		<td data-th="Price"><%=
+		product.Price
+		%>
+		</td>
+		
+		<td data-th="Quantity">
+			<!--<input type="number" name="itemQuantity.<%= product.ProductId %>" class="form-control text-center" value="<%= item.Quantity %>">-->
+                        X <%= item.Quantity %>
+		</td>
+		<td data-th="Subtotal" class="text-center"><%=
+		item.UnitPrice * item.Quantity
+		%></td>
+                
+                </tr>
+                <!--
+		<td class="actions" data-th="">
+			<button type=submit class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+			<a href="<%= "cart?delete=" + product.ProductId %>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+                        
+		</td>-->
+    <%
+    }
+    %>
+    </tbody>
+	<tfoot>
+		<tr class="visible-xs">
+			<td class="text-center"><strong>Total <%= total %></strong></td>
+		</tr>
+		<tr>
+							<td>
+                                                        <form method=post >
+                                                        <input type=hidden name=orderId value="<%= order.OrderId %>" />
+                                                        <input type=hidden name=action value=reorder />
+                                                        <button type=submit  class="btn btn-success btn-block">Reorder <i class="fa fa-angle-left"></i></button>
+                                                        </form></td>
+							<td colspan="2" class="hidden-xs"></td>
+							<td class="hidden-xs text-center"><strong>Total $<%= total %></strong></td>
+							<td>
+                                                        <!--
+                                                        <button type=submit  class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button>
+                                                        -->
+                                                        </td>
+						</tr>
+					</tfoot>
+				</table>
+                                <div style="clear:both"></div>
+    <%
+}
+}
+%>
+</div>
+          </div>
 <%@ include file="foot.jsp" %>

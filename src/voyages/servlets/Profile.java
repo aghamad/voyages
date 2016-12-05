@@ -43,6 +43,7 @@ public class Profile extends BaseServlet {
             authUser.LastName = request.getParameter("LastName");
             authUser.Address = request.getParameter("Address");
             authUser.Email = request.getParameter("Email");
+            authUser.CityId = Long.parseLong(request.getParameter("CityId"));
 
             authUser.update();
             request.getRequestDispatcher("/profile.jsp").forward(request,
@@ -57,10 +58,10 @@ public class Profile extends BaseServlet {
     public void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        response.setContentType(CONTENT_TYPE);
 
         if(User.getAuthenticatedUser(request) == null) {
-            response.sendRedirect("/Commerce-Project1-context-root/login");
+            response.sendRedirect("login");
+            return;
         }
 
         request.setAttribute("authUser",

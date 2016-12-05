@@ -17,7 +17,9 @@ public class OrderDetailsModel implements IModel {
 
     public long OrderDetailId;
 
-    public long OrderId;
+    public ProductModel product;
+    
+	public long OrderId;
 
     public long ProductId;
 
@@ -59,6 +61,19 @@ public class OrderDetailsModel implements IModel {
 
     public OrderDetailsModel(IModel model) {
         setConnexion(model.getConnexion());
+    }
+    public ProductModel getProduct() throws DAOException {
+    	if(this.product == null) {
+	    	ProductModel model = new ProductModel(this);
+	    	model.ProductId = this.ProductId;
+	    	model.read();
+	    	this.product = model;
+    	}
+    	return this.product;
+    }
+    
+    public void setProduct(ProductModel p) {
+    	this.product= p;
     }
 
     @Override
@@ -232,4 +247,45 @@ public class OrderDetailsModel implements IModel {
         this.Quantity = the_model.Quantity;
         this.UnitPrice = the_model.UnitPrice;
     }
+    
+
+    public long getOrderDetailId() {
+		return OrderDetailId;
+	}
+
+	public void setOrderDetailId(long orderDetailId) {
+		OrderDetailId = orderDetailId;
+	}
+
+	public long getOrderId() {
+		return OrderId;
+	}
+
+	public void setOrderId(long orderId) {
+		OrderId = orderId;
+	}
+
+	public long getProductId() {
+		return ProductId;
+	}
+
+	public void setProductId(long productId) {
+		ProductId = productId;
+	}
+
+	public double getUnitPrice() {
+		return UnitPrice;
+	}
+
+	public void setUnitPrice(double unitPrice) {
+		UnitPrice = unitPrice;
+	}
+
+	public int getQuantity() {
+		return Quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		Quantity = quantity;
+	}
 }
