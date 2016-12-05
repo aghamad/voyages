@@ -78,6 +78,9 @@ public class User implements IModel {
 
     public CityModel getCity() throws DAOException {
         CityModel model = new CityModel(this);
+        if(this.CityId == 0) {
+            return null;
+        }
         model.CityId = this.CityId;
         model.read();
         return model;

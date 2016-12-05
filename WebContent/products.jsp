@@ -32,33 +32,41 @@
     ProductModel productModel = new ProductModel(Connexion.getOrSetUpConnexion(getServletContext()));
     
     
-    CityModel userCity = new CityModel(productModel);
-    userCity.CityId = authenticatedUser.getCityId();
-    userCity.read();
+    //CityModel userCity = new CityModel(productModel);
+    CityModel userCity = authenticatedUser.getCity();
+    //userCity.CityId = authenticatedUser.getCityId();
+    
+    //userCity.read();
     
     
     List<ProductModel> initial_products = Collections.emptyList();
-    String type = (String) request.getParameter("type");
+    String type = request.getParameter("type");
+    
+    if(userCity == null)
+        type = "all";
     if(type == null) type = "relevant";
     if(type.equals("relevant")) {
     	%> <a href="?type=all">Afficher tous les voyages</a><%
     	initial_products = productModel.findByDepartureCity(userCity, new Date());	
     }
     if(type.equals("all")) {
-    	%> <a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : <%= userCity.getName()%> </a><%
+        if(userCity != null) {
+    		%> <a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : <%= userCity.getName()%> </a><%
+        }
     	initial_products = productModel.getAll();	
     }
     
     
     List<ProductModel> vedettes = productModel.findVedettes();
     
-    ArrayList<Integer> cartCodes = (ArrayList<Integer>) request.getSession().getAttribute("cart");
+    @SuppressWarnings("unchecked")
+    List<Long> cartCodes = (List<Long>) request.getSession().getAttribute("cart");
     /*Caddy caddy = (Caddy) request.getSession().getAttribute("caddy");
     
     if(caddy == null)
         caddy = new Caddy();
         */
-    ArrayList<ProductModel> cart = new ArrayList<ProductModel> ();
+    ArrayList<ProductModel> cart = new ArrayList<> ();
     //request.getSession().getAttribute("cart");
     
     /*if(cartCodes != null){
@@ -75,7 +83,7 @@
     if(added != null){
 		%>
 			<div class="alert alert-success">
-		'<%= added.Name %>' ajout� a votre panier !
+		'<%= added.Name %>' ajouté à votre panier !
 		</div>
 
 		<%

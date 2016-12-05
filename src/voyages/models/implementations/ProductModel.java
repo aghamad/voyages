@@ -21,7 +21,7 @@ public class ProductModel implements IModel {
 
     private Connexion connexion = null;
 
-    public long ProductId;
+    public Long ProductId;
 
     public String Name;
 
@@ -113,7 +113,7 @@ public class ProductModel implements IModel {
 
             PreparedStatement getByIdStatement = getConnexion().getConnection().prepareStatement(ProductModel.GET_BY_ID);
             getByIdStatement.setLong(1,
-                the_model.ProductId);
+                the_model.ProductId.longValue());
 
             try(
                 ResultSet rset = getByIdStatement.executeQuery()) {
@@ -132,7 +132,8 @@ public class ProductModel implements IModel {
     private ProductModel extract(ResultSet rset) throws DAOException {
         try {
             ProductModel product = new ProductModel(this);
-            product.ProductId = rset.getInt("ProductId");
+
+            product.ProductId = new Long(Long.parseLong(rset.getString("ProductId")));
             product.Name = rset.getString("Name");
             product.Description = rset.getString("Description");
             product.Image = rset.getString("Image");
@@ -246,7 +247,7 @@ public class ProductModel implements IModel {
                 try(
                     ResultSet generatedKeys = createStatement.getGeneratedKeys()) {
                     if(generatedKeys.next()) {
-                        this.ProductId = generatedKeys.getLong(1);
+                        this.ProductId = new Long(Long.parseLong(generatedKeys.getString(1)));
                     } else {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
@@ -312,7 +313,7 @@ public class ProductModel implements IModel {
                 createStatement.setInt(5,
                     the_product.IsVedette);
                 createStatement.setLong(6,
-                    the_product.ProductId);
+                    the_product.ProductId.longValue());
                 createStatement.setString(7,
                     DateParser.format(the_product.DateDebut));
                 createStatement.setString(8,
@@ -335,7 +336,7 @@ public class ProductModel implements IModel {
                 PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(DELETE)) {
 
                 createStatement.setLong(1,
-                    the_product.ProductId);
+                    the_product.ProductId.longValue());
 
                 int affectedRows = createStatement.executeUpdate();
 
@@ -542,11 +543,11 @@ public class ProductModel implements IModel {
         this.Description = the_model.Description;
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return this.ProductId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         this.ProductId = productId;
     }
 

@@ -4,6 +4,7 @@ package voyages.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,12 +41,19 @@ public class Products extends BaseServlet {
         out.close();
     }
 
-    @SuppressWarnings("boxing")
     @Override
     public void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        int code = Integer.parseInt(request.getParameter("productCode"));
+        if(request.getParameter("productCode") == "") {
+            throw new ServletException("fuck you");
+        }
+        Long code = new Long(Long.parseLong(request.getParameter("productCode")));
+
+        /*if(code == null) {
+            throw new ServletException("fuck you "
+                + request.getParameter("productCode"));
+        }*/
 
         // Add to cart the product with the corresponding code
 
@@ -57,7 +65,7 @@ public class Products extends BaseServlet {
         } catch(ConnexionException e) {
             throw new ServletException(e);
         }
-        productModel.ProductId = code;
+        productModel.setProductId(code);
 
         try {
             productModel.read();
@@ -67,13 +75,17 @@ public class Products extends BaseServlet {
         }
         if(action.equals("addtocart")) {
 
-            @SuppressWarnings("unchecked")
-            ArrayList<Integer> carts = (ArrayList<Integer>) request.getSession().getAttribute("cart");
+            List<Long> carts = null;
+            if(request.getSession().getAttribute("cart") instanceof List<?>) {
+                carts = (List<Long>) request.getSession().getAttribute("cart");
+            }
 
             if(carts == null) {
                 carts = new ArrayList<>();
             }
+
             carts.add(code);
+
             request.getSession().setAttribute("cart",
                 carts);
 
@@ -92,7 +104,6 @@ public class Products extends BaseServlet {
 
             caddy.add(added);
 
-            //request.getSession().setAttribute("cart", carts);
             request.setAttribute("addedProduct",
                 added);
         } else if(action.equals("sponsor")) {
