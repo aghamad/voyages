@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
@@ -24,8 +23,7 @@ public class ProductModel implements IModel {
 
     public long ProductId;
 
-
-	public String Name;
+    public String Name;
 
     public String Description;
 
@@ -34,28 +32,36 @@ public class ProductModel implements IModel {
     public double Price;
 
     public int IsVedette = 0;
-    
+
     public Date DateDebut;
-    
+
     public Date DateFin;
-    
+
     private static String columns = "ProductId, Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
 
     private static String non_id_columns = "Name, Description, Image, Price, IsVedette, DateDebut, DateFin";
-    
+
     private static String TABLE = "Products";
+
     private static String FIND_BY_DEPARTURE_CITY = "SELECT * FROM "
-    		+ TABLE 
-    		+ ", Escale "
-    		+ "WHERE Escale.ProductId = " + TABLE + ".ProductId  "
-    		+ "AND Escale.CityId = ? AND Escale.IsDepart = 1 AND datetime(" + TABLE + ".DateDebut) > datetime(?) "
-    		+ " GROUP BY " + TABLE + ".ProductId";
-    
-    
+        + TABLE
+        + ", Escale "
+        + "WHERE Escale.ProductId = "
+        + TABLE
+        + ".ProductId  "
+        + "AND Escale.CityId = ? AND Escale.IsDepart = 1 AND datetime("
+        + TABLE
+        + ".DateDebut) > datetime(?) "
+        + " GROUP BY "
+        + TABLE
+        + ".ProductId";
+
     private static String FIND_BY_MIN_TRIP_START_DATE = "SELECT * FROM "
-    		+ TABLE 
-    		+ "WHERE datetime(" + TABLE + ".DateDebut) > datetime(?) ";
-    
+        + TABLE
+        + "WHERE datetime("
+        + TABLE
+        + ".DateDebut) > datetime(?) ";
+
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Products WHERE ProductId = ?";
@@ -71,7 +77,7 @@ public class ProductModel implements IModel {
     private static String CREATE = "INSERT INTO Products ("
         + non_id_columns
         + ") VALUES(?, ?, ?, ?, ?, ?, ?) ";
-    
+
     private static String DELETE = "DELETE FROM Products WHERE ProductId = ?";
 
     private static String UPDATE = "UPDATE Products SET Name = ?, Description = ?, Image = ?, Price = ?, IsVedette = ?, DateDebut = ?, DateFin = ? WHERE ProductId = ?";
@@ -134,15 +140,17 @@ public class ProductModel implements IModel {
             product.IsVedette = rset.getInt("IsVedette");
 
             try {
-            	Date parsed = DateParser.parse(rset.getString("DateDebut"));
-				product.DateDebut = parsed;
-			} catch (ParseException e) {
-				System.err.println("Cannot parse DateDebut for Product # " + product.ProductId);
-			}
+                Date parsed = DateParser.parse(rset.getString("DateDebut"));
+                product.DateDebut = parsed;
+            } catch(ParseException e) {
+                System.err.println("Cannot parse DateDebut for Product # "
+                    + product.ProductId);
+            }
             try {
-            	product.DateFin = DateParser.parse(rset.getString("DateFin"));
-            } catch (ParseException e) {
-            	System.err.println("Cannot parse DateFin for Product # " + product.ProductId);
+                product.DateFin = DateParser.parse(rset.getString("DateFin"));
+            } catch(ParseException e) {
+                System.err.println("Cannot parse DateFin for Product # "
+                    + product.ProductId);
             }
 
             return product;
@@ -209,7 +217,7 @@ public class ProductModel implements IModel {
 
     @Override
     public int create(IModel model) throws DAOException {
-    	// Name, Description, Image, Price, IsVedette, DateDebut, DateFin
+        // Name, Description, Image, Price, IsVedette, DateDebut, DateFin
         try {
             ProductModel the_product = (ProductModel) model;
 
@@ -225,8 +233,10 @@ public class ProductModel implements IModel {
                     the_product.Price);
                 createStatement.setInt(5,
                     the_product.IsVedette);
-                createStatement.setString(6, DateParser.format(the_product.DateDebut));
-                createStatement.setString(7, DateParser.format(the_product.DateFin));
+                createStatement.setString(6,
+                    DateParser.format(the_product.DateDebut));
+                createStatement.setString(7,
+                    DateParser.format(the_product.DateFin));
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -247,15 +257,15 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
-    
 
-    public List<ProductModel> findByDepartureCity(CityModel city, Date tripStartDate) throws DAOException {
+    public List<ProductModel> findByDepartureCity(CityModel city,
+        Date tripStartDate) throws DAOException {
         try {
             PreparedStatement findByStatement = getConnexion().getConnection().prepareStatement(FIND_BY_DEPARTURE_CITY);
             findByStatement.setLong(1,
                 city.CityId);
-            findByStatement.setString(2, 
-            		DateParser.format(tripStartDate));
+            findByStatement.setString(2,
+                DateParser.format(tripStartDate));
 
             try(
                 ResultSet rset = findByStatement.executeQuery()) {
@@ -266,13 +276,13 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
-    
+
     public List<ProductModel> findByDepartureDateGreater(Date tripMinStartDate) throws DAOException {
         try {
             PreparedStatement findByStatement = getConnexion().getConnection().prepareStatement(FIND_BY_MIN_TRIP_START_DATE);
-            
-            findByStatement.setString(1, 
-            		DateParser.format(tripMinStartDate));
+
+            findByStatement.setString(1,
+                DateParser.format(tripMinStartDate));
 
             try(
                 ResultSet rset = findByStatement.executeQuery()) {
@@ -283,7 +293,6 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
-
 
     @Override
     public int update(IModel model) throws DAOException {
@@ -305,9 +314,9 @@ public class ProductModel implements IModel {
                 createStatement.setLong(6,
                     the_product.ProductId);
                 createStatement.setString(7,
-                		DateParser.format(the_product.DateDebut));
+                    DateParser.format(the_product.DateDebut));
                 createStatement.setString(8,
-                		DateParser.format(the_product.DateFin));
+                    DateParser.format(the_product.DateFin));
                 int affectedRows = createStatement.executeUpdate();
 
                 return affectedRows;
@@ -316,7 +325,7 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
-    
+
     @Override
     public int delete(IModel model) throws DAOException {
         try {
@@ -324,10 +333,10 @@ public class ProductModel implements IModel {
 
             try(
                 PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(DELETE)) {
-                
+
                 createStatement.setLong(1,
                     the_product.ProductId);
-                
+
                 int affectedRows = createStatement.executeUpdate();
 
                 return affectedRows;
@@ -348,7 +357,6 @@ public class ProductModel implements IModel {
             throw new DAOException(e);
         }
     }
-
 
     public byte[] getImageAsBytes() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -518,10 +526,10 @@ public class ProductModel implements IModel {
     public void read() throws DAOException {
         this.copy(this.read(this));
     }
-    
+
     public List<EscaleModel> getEscales() throws DAOException {
-    	EscaleModel model = new EscaleModel(this);
-    	return model.findByProduct(this);
+        EscaleModel model = new EscaleModel(this);
+        return model.findByProduct(this);
     }
 
     private void copy(IModel model) {
@@ -535,66 +543,66 @@ public class ProductModel implements IModel {
     }
 
     public long getProductId() {
-		return ProductId;
-	}
+        return this.ProductId;
+    }
 
-	public void setProductId(long productId) {
-		ProductId = productId;
-	}
+    public void setProductId(long productId) {
+        this.ProductId = productId;
+    }
 
-	public String getName() {
-		return Name;
-	}
+    public String getName() {
+        return this.Name;
+    }
 
-	public void setName(String name) {
-		Name = name;
-	}
+    public void setName(String name) {
+        this.Name = name;
+    }
 
-	public String getDescription() {
-		return Description;
-	}
+    public String getDescription() {
+        return this.Description;
+    }
 
-	public void setDescription(String description) {
-		Description = description;
-	}
+    public void setDescription(String description) {
+        this.Description = description;
+    }
 
-	public String getImage() {
-		return Image;
-	}
+    public String getImage() {
+        return this.Image;
+    }
 
-	public void setImage(String image) {
-		Image = image;
-	}
+    public void setImage(String image) {
+        this.Image = image;
+    }
 
-	public double getPrice() {
-		return Price;
-	}
+    public double getPrice() {
+        return this.Price;
+    }
 
-	public void setPrice(double price) {
-		Price = price;
-	}
+    public void setPrice(double price) {
+        this.Price = price;
+    }
 
-	public int getIsVedette() {
-		return IsVedette;
-	}
+    public int getIsVedette() {
+        return this.IsVedette;
+    }
 
-	public void setIsVedette(int isVedette) {
-		IsVedette = isVedette;
-	}
+    public void setIsVedette(int isVedette) {
+        this.IsVedette = isVedette;
+    }
 
-	public Date getDateDebut() {
-		return DateDebut;
-	}
+    public Date getDateDebut() {
+        return this.DateDebut;
+    }
 
-	public void setDateDebut(Date dateDebut) {
-		DateDebut = dateDebut;
-	}
+    public void setDateDebut(Date dateDebut) {
+        this.DateDebut = dateDebut;
+    }
 
-	public Date getDateFin() {
-		return DateFin;
-	}
+    public Date getDateFin() {
+        return this.DateFin;
+    }
 
-	public void setDateFin(Date dateFin) {
-		DateFin = dateFin;
-	}
+    public void setDateFin(Date dateFin) {
+        this.DateFin = dateFin;
+    }
 }

@@ -2,14 +2,11 @@
 package voyages.servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.db.Connexion;
@@ -41,9 +38,7 @@ public class Login extends BaseServlet {
         Connexion connexion = null;
         try {
             connexion = getConnexion();
-        } catch(
-            ConnexionException
-             e) {
+        } catch(ConnexionException e) {
             throw new ServletException(e);
         }
 

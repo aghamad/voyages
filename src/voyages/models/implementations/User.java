@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
@@ -19,7 +18,7 @@ public class User implements IModel {
 
     public long CityId;
 
-	public String Password;
+    public String Password;
 
     public String FirstName;
 
@@ -40,10 +39,10 @@ public class User implements IModel {
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Users WHERE id = ?";
-    
-    private static String GET_BY_CITY = "SELECT "
+
+    /*private static String GET_BY_CITY = "SELECT "
             + columns
-            + " FROM Users WHERE CityId = ?";
+            + " FROM Users WHERE CityId = ?";*/
 
     private static String GET_BY_EMAIL_PASSWORD = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
 
@@ -78,16 +77,17 @@ public class User implements IModel {
     }
 
     public CityModel getCity() throws DAOException {
-    	CityModel model = new CityModel(this);
-    	model.CityId = this.CityId;
-    	model.read();
-    	return model;
+        CityModel model = new CityModel(this);
+        model.CityId = this.CityId;
+        model.read();
+        return model;
     }
+
     public List<OrderModel> getOrders() throws DAOException {
-    	OrderModel model = new OrderModel(this);
-    	return model.findByCustomer(this);
+        OrderModel model = new OrderModel(this);
+        return model.findByCustomer(this);
     }
-    
+
     public User(Connexion connexion,
         String email,
         String password) {
@@ -206,8 +206,8 @@ public class User implements IModel {
                     the_user.Address);
                 createStatement.setBoolean(6,
                     the_user.IsAdmin);
-                createStatement.setLong(7, 
-                		the_user.CityId);
+                createStatement.setLong(7,
+                    the_user.CityId);
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -247,11 +247,10 @@ public class User implements IModel {
                     the_user.Address);
                 updateStatement.setBoolean(6,
                     the_user.IsAdmin);
-                updateStatement.setLong(7, 
-                		the_user.CityId);
+                updateStatement.setLong(7,
+                    the_user.CityId);
                 updateStatement.setLong(8,
                     the_user.id);
-                
 
                 return updateStatement.executeUpdate();
             }
@@ -292,68 +291,68 @@ public class User implements IModel {
         this.Email = the_model.Email;
         this.CityId = the_model.CityId;
     }
-    
 
     public long getCityId() {
-    	return CityId;
+        return this.CityId;
     }
+
     public void setCityId(long id) {
-    	this.CityId = id;
+        this.CityId = id;
     }
-    
+
     public long getId() {
-		return id;
-	}
+        return this.id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getEmail() {
-		return Email;
-	}
+    public String getEmail() {
+        return this.Email;
+    }
 
-	public void setEmail(String email) {
-		Email = email;
-	}
+    public void setEmail(String email) {
+        this.Email = email;
+    }
 
-	public String getPassword() {
-		return Password;
-	}
+    public String getPassword() {
+        return this.Password;
+    }
 
-	public void setPassword(String password) {
-		Password = password;
-	}
+    public void setPassword(String password) {
+        this.Password = password;
+    }
 
-	public String getFirstName() {
-		return FirstName;
-	}
+    public String getFirstName() {
+        return this.FirstName;
+    }
 
-	public void setFirstName(String firstName) {
-		FirstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.FirstName = firstName;
+    }
 
-	public String getLastName() {
-		return LastName;
-	}
+    public String getLastName() {
+        return this.LastName;
+    }
 
-	public void setLastName(String lastName) {
-		LastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
+    }
 
-	public String getAddress() {
-		return Address;
-	}
+    public String getAddress() {
+        return this.Address;
+    }
 
-	public void setAddress(String address) {
-		Address = address;
-	}
+    public void setAddress(String address) {
+        this.Address = address;
+    }
 
-	public boolean isIsAdmin() {
-		return IsAdmin;
-	}
+    public boolean isIsAdmin() {
+        return this.IsAdmin;
+    }
 
-	public void setIsAdmin(boolean isAdmin) {
-		IsAdmin = isAdmin;
-	}
+    public void setIsAdmin(boolean isAdmin) {
+        this.IsAdmin = isAdmin;
+    }
 }

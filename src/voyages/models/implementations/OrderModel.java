@@ -5,11 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
@@ -33,8 +31,7 @@ public class OrderModel implements IModel {
         + columns
         + " FROM Orders";
 
-
-	private static String GET_BY_ID = "SELECT "
+    private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Orders WHERE OrderId = ?";
 
@@ -177,7 +174,7 @@ public class OrderModel implements IModel {
         throw new DAOException("Not implemented");
 
     }
-    
+
     private OrderModel extract(ResultSet rset) throws DAOException {
         try {
             OrderModel order = new OrderModel(this);
@@ -185,11 +182,11 @@ public class OrderModel implements IModel {
             order.CustomerId = rset.getInt("CustomerId");
 
             try {
-				order.OrderDate = DateParser.parse(rset.getString("OrderDate"));
-			} catch (ParseException e) {
-				order.OrderDate = null;
-				// On laisse OrderDate a null
-			}
+                order.OrderDate = DateParser.parse(rset.getString("OrderDate"));
+            } catch(ParseException e) {
+                order.OrderDate = null;
+                // On laisse OrderDate a null
+            }
 
             return order;
         } catch(SQLException sqlExcept) {
@@ -220,35 +217,34 @@ public class OrderModel implements IModel {
         this.OrderId = the_model.OrderId;
         this.OrderDate = the_model.OrderDate;
     }
-    
-    
 
-public List<OrderDetailsModel> getItems() throws DAOException {
-	OrderDetailsModel model = new OrderDetailsModel(this);
-	return model.findByOrder(this);
-	
-}
+    public List<OrderDetailsModel> getItems() throws DAOException {
+        OrderDetailsModel model = new OrderDetailsModel(this);
+        return model.findByOrder(this);
+
+    }
+
     public long getOrderId() {
-		return OrderId;
-	}
+        return this.OrderId;
+    }
 
-	public void setOrderId(long orderId) {
-		OrderId = orderId;
-	}
+    public void setOrderId(long orderId) {
+        this.OrderId = orderId;
+    }
 
-	public long getCustomerId() {
-		return CustomerId;
-	}
+    public long getCustomerId() {
+        return this.CustomerId;
+    }
 
-	public void setCustomerId(long customerId) {
-		CustomerId = customerId;
-	}
+    public void setCustomerId(long customerId) {
+        this.CustomerId = customerId;
+    }
 
-	public Date getOrderDate() {
-		return OrderDate;
-	}
+    public Date getOrderDate() {
+        return this.OrderDate;
+    }
 
-	public void setOrderDate(Date orderDate) {
-		OrderDate = orderDate;
-	}
+    public void setOrderDate(Date orderDate) {
+        this.OrderDate = orderDate;
+    }
 }

@@ -3,20 +3,16 @@ package voyages.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.beans.Caddy;
 import voyages.beans.CaddyItem;
-import voyages.db.Connexion;
 import voyages.models.implementations.OrderDetailsModel;
 import voyages.models.implementations.OrderModel;
 import voyages.models.implementations.ProductModel;

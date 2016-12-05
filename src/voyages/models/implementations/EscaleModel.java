@@ -1,9 +1,6 @@
+
 package voyages.models.implementations;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +8,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
@@ -19,65 +15,71 @@ import voyages.models.utils.DateParser;
 
 public class EscaleModel implements IModel {
 
-
     private Connexion connexion = null;
 
     public long EscaleId;
 
     public long CityId;
-    
+
     public long ProductId;
-    
+
     public String NomActivite;
-    
+
     public String DescriptionActivite;
 
     public boolean IsArrivee;
-    
-    public boolean IsDepart;
-    
-    public Date DateEscale;
-    
 
-	private String Image;
+    public boolean IsDepart;
+
+    public Date DateEscale;
+
+    private String Image;
 
     private static String columns = "EscaleId, CityId, IsDepart, NomActivite, DescriptionActivite, DateEscale, ProductId, Image, IsArrivee";
 
     private static String insert_columns = "CityId, IsDepart, NomActivite, DescriptionActivite, DateEscale, ProductId, Image, IsArrivee";
 
     private static String TABLE = "Escale";
-    
+
     private static String GET_ALL = "SELECT "
-            + TABLE
-            + " FROM " + TABLE;
+        + TABLE
+        + " FROM "
+        + TABLE;
+
     private static String GET_BY_ID = "SELECT "
         + columns
-        + " FROM " + TABLE + " WHERE EscaleId = ?";
+        + " FROM "
+        + TABLE
+        + " WHERE EscaleId = ?";
 
     private static String FIND_BY_PRODUCT = "SELECT "
         + columns
-        + " FROM " 
-        + TABLE 
+        + " FROM "
+        + TABLE
         + " WHERE ProductId = ?";
-    
+
     /*
     private static String FIND_BY_CITY = "SELECT "
             + columns
-            + " FROM " 
-            + TABLE 
+            + " FROM "
+            + TABLE
             + " WHERE CityId = ?";
-    
+
     private static String FIND_BY_DATE_GREATER = "SELECT "
             + columns
-            + " FROM " 
-            + TABLE 
+            + " FROM "
+            + TABLE
             + " WHERE DateEscale > ?";*/
 
-    private static String CREATE = "INSERT INTO " + TABLE + "("
+    private static String CREATE = "INSERT INTO "
+        + TABLE
+        + "("
         + insert_columns
         + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
 
-    private static String UPDATE = "UPDATE " + TABLE + " SET CityId = ?, IsDepart = ?, NomActivite = ?, DescriptionActivite = ?, DateEscale = ?, ProductId = ?, Image = ?, IsArrivee = ? WHERE EscaleId = ?";
+    private static String UPDATE = "UPDATE "
+        + TABLE
+        + " SET CityId = ?, IsDepart = ?, NomActivite = ?, DescriptionActivite = ?, DateEscale = ?, ProductId = ?, Image = ?, IsArrivee = ? WHERE EscaleId = ?";
 
     @Override
     public void setConnexion(Connexion conn) {
@@ -119,23 +121,33 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
-    
+
     @Override
     public int update(IModel model) throws DAOException {
         try {
             EscaleModel escale = (EscaleModel) model;
 
-            try(PreparedStatement updateStatement = getConnexion().getConnection().prepareStatement(UPDATE)) {
-            	 
-            	updateStatement.setLong(1, escale.CityId);
-            	updateStatement.setLong(2, escale.IsDepart ? 1 : 0);
-            	updateStatement.setString(3, escale.NomActivite);
-            	updateStatement.setString(4, escale.DescriptionActivite);
-            	updateStatement.setString(5, DateParser.format(escale.DateEscale));
-            	updateStatement.setLong(6, escale.ProductId);
-            	updateStatement.setString(7, escale.Image);
-            	updateStatement.setInt(8, escale.IsArrivee ? 1 : 0);
-            	updateStatement.setLong(9, escale.EscaleId);
+            try(
+                PreparedStatement updateStatement = getConnexion().getConnection().prepareStatement(UPDATE)) {
+
+                updateStatement.setLong(1,
+                    escale.CityId);
+                updateStatement.setLong(2,
+                    escale.IsDepart ? 1 : 0);
+                updateStatement.setString(3,
+                    escale.NomActivite);
+                updateStatement.setString(4,
+                    escale.DescriptionActivite);
+                updateStatement.setString(5,
+                    DateParser.format(escale.DateEscale));
+                updateStatement.setLong(6,
+                    escale.ProductId);
+                updateStatement.setString(7,
+                    escale.Image);
+                updateStatement.setInt(8,
+                    escale.IsArrivee ? 1 : 0);
+                updateStatement.setLong(9,
+                    escale.EscaleId);
 
                 int affectedRows = updateStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -157,16 +169,24 @@ public class EscaleModel implements IModel {
             try(
                 PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(CREATE)) {
 
-            	createStatement.setLong(1, escale.CityId);
-            	createStatement.setInt(2, escale.IsDepart ? 1 : 0);
-            	createStatement.setString(3, escale.NomActivite);
-            	createStatement.setString(4, escale.DescriptionActivite);
-            	createStatement.setString(5, DateParser.format(escale.DateEscale));
-            	createStatement.setLong(6, escale.ProductId);
-            	createStatement.setString(7, escale.Image);
-            	createStatement.setInt(8, escale.IsArrivee ? 1 : 0);
-            	
-            	int affectedRows = createStatement.executeUpdate();
+                createStatement.setLong(1,
+                    escale.CityId);
+                createStatement.setInt(2,
+                    escale.IsDepart ? 1 : 0);
+                createStatement.setString(3,
+                    escale.NomActivite);
+                createStatement.setString(4,
+                    escale.DescriptionActivite);
+                createStatement.setString(5,
+                    DateParser.format(escale.DateEscale));
+                createStatement.setLong(6,
+                    escale.ProductId);
+                createStatement.setString(7,
+                    escale.Image);
+                createStatement.setInt(8,
+                    escale.IsArrivee ? 1 : 0);
+
+                int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
                     throw new SQLException("Creating escale failed, no rows affected.");
                 }
@@ -174,7 +194,7 @@ public class EscaleModel implements IModel {
                 try(
                     ResultSet generatedKeys = createStatement.getGeneratedKeys()) {
                     if(generatedKeys.next()) {
-                    	escale.EscaleId = generatedKeys.getLong(1);
+                        escale.EscaleId = generatedKeys.getLong(1);
                     } else {
                         throw new SQLException("Creating escale failed, no ID obtained.");
                     }
@@ -185,6 +205,7 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
+
     private EscaleModel extract(ResultSet rset) throws DAOException {
         try {
             EscaleModel escale = new EscaleModel(this);
@@ -196,25 +217,26 @@ public class EscaleModel implements IModel {
             escale.ProductId = rset.getLong("ProductId");
             escale.NomActivite = rset.getString("NomActivite");
             escale.DescriptionActivite = rset.getString("DescriptionActivite");
-            
+
             try {
-            	Date parsed = DateParser.parse(rset.getString("DateEscale"));
-            	escale.DateEscale = parsed;
-			} catch (ParseException e) {
-				System.err.println("Cannot parse DateEscale for Escale # " + escale.ProductId);
-			}
+                Date parsed = DateParser.parse(rset.getString("DateEscale"));
+                escale.DateEscale = parsed;
+            } catch(ParseException e) {
+                System.err.println("Cannot parse DateEscale for Escale # "
+                    + escale.ProductId);
+            }
 
             return escale;
         } catch(SQLException sqlExcept) {
             throw new DAOException(sqlExcept);
         }
     }
-    
+
     private List<EscaleModel> extractAll(ResultSet rset) throws DAOException {
         List<EscaleModel> escales = new ArrayList<>();
         try {
             while(rset.next()) {
-            	escales.add(extract(rset));
+                escales.add(extract(rset));
             }
             return escales;
         } catch(SQLException sqlException) {
@@ -235,12 +257,12 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
-    
+
     public List<EscaleModel> findByProduct(ProductModel product) throws DAOException {
         try {
             try(
                 PreparedStatement getByVoyageStatement = getConnexion().getConnection().prepareStatement(EscaleModel.FIND_BY_PRODUCT)) {
-            	getByVoyageStatement.setLong(1,
+                getByVoyageStatement.setLong(1,
                     product.ProductId);
 
                 try(
@@ -253,7 +275,6 @@ public class EscaleModel implements IModel {
             throw new DAOException(e);
         }
     }
-
 
     @Override
     public int delete(IModel model) throws DAOException {
@@ -294,84 +315,84 @@ public class EscaleModel implements IModel {
         this.DescriptionActivite = the_model.DescriptionActivite;
         this.NomActivite = the_model.NomActivite;
     }
-    
 
     public CityModel getCity() throws DAOException {
-    	CityModel model = new CityModel(this);
-    	model.CityId = this.CityId;
-    	model.read();
-    	return model;
+        CityModel model = new CityModel(this);
+        model.CityId = this.CityId;
+        model.read();
+        return model;
     }
+
     public long getEscaleId() {
-		return EscaleId;
-	}
+        return this.EscaleId;
+    }
 
-	public void setEscaleId(long escaleId) {
-		EscaleId = escaleId;
-	}
+    public void setEscaleId(long escaleId) {
+        this.EscaleId = escaleId;
+    }
 
-	public long getCityId() {
-		return CityId;
-	}
+    public long getCityId() {
+        return this.CityId;
+    }
 
-	public void setCityId(long cityId) {
-		CityId = cityId;
-	}
+    public void setCityId(long cityId) {
+        this.CityId = cityId;
+    }
 
-	public long getProductId() {
-		return ProductId;
-	}
+    public long getProductId() {
+        return this.ProductId;
+    }
 
-	public void setProductId(long productId) {
-		ProductId = productId;
-	}
+    public void setProductId(long productId) {
+        this.ProductId = productId;
+    }
 
-	public String getNomActivite() {
-		return NomActivite;
-	}
+    public String getNomActivite() {
+        return this.NomActivite;
+    }
 
-	public void setNomActivite(String nomActivite) {
-		NomActivite = nomActivite;
-	}
+    public void setNomActivite(String nomActivite) {
+        this.NomActivite = nomActivite;
+    }
 
-	public String getDescriptionActivite() {
-		return DescriptionActivite;
-	}
+    public String getDescriptionActivite() {
+        return this.DescriptionActivite;
+    }
 
-	public void setDescriptionActivite(String descriptionActivite) {
-		DescriptionActivite = descriptionActivite;
-	}
+    public void setDescriptionActivite(String descriptionActivite) {
+        this.DescriptionActivite = descriptionActivite;
+    }
 
-	public boolean getIsArrivee() {
-		return IsArrivee;
-	}
+    public boolean getIsArrivee() {
+        return this.IsArrivee;
+    }
 
-	public void setIsArrivee(boolean isArrivee) {
-		IsArrivee = isArrivee;
-	}
+    public void setIsArrivee(boolean isArrivee) {
+        this.IsArrivee = isArrivee;
+    }
 
-	public boolean getIsDepart() {
-		return IsDepart;
-	}
+    public boolean getIsDepart() {
+        return this.IsDepart;
+    }
 
-	public void setIsDepart(boolean isDepart) {
-		IsDepart = isDepart;
-	}
+    public void setIsDepart(boolean isDepart) {
+        this.IsDepart = isDepart;
+    }
 
-	public Date getDateEscale() {
-		return DateEscale;
-	}
+    public Date getDateEscale() {
+        return this.DateEscale;
+    }
 
-	public void setDateEscale(Date dateEscale) {
-		DateEscale = dateEscale;
-	}
+    public void setDateEscale(Date dateEscale) {
+        this.DateEscale = dateEscale;
+    }
 
-	public String getImage() {
-		return Image;
-	}
+    public String getImage() {
+        return this.Image;
+    }
 
-	public void setImage(String image) {
-		Image = image;
-	}
+    public void setImage(String image) {
+        this.Image = image;
+    }
 
 }

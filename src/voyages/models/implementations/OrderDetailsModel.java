@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import exceptions.DAOException;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
@@ -18,8 +17,8 @@ public class OrderDetailsModel implements IModel {
     public long OrderDetailId;
 
     public ProductModel product;
-    
-	public long OrderId;
+
+    public long OrderId;
 
     public long ProductId;
 
@@ -62,18 +61,19 @@ public class OrderDetailsModel implements IModel {
     public OrderDetailsModel(IModel model) {
         setConnexion(model.getConnexion());
     }
+
     public ProductModel getProduct() throws DAOException {
-    	if(this.product == null) {
-	    	ProductModel model = new ProductModel(this);
-	    	model.ProductId = this.ProductId;
-	    	model.read();
-	    	this.product = model;
-    	}
-    	return this.product;
+        if(this.product == null) {
+            ProductModel model = new ProductModel(this);
+            model.ProductId = this.ProductId;
+            model.read();
+            this.product = model;
+        }
+        return this.product;
     }
-    
+
     public void setProduct(ProductModel p) {
-    	this.product= p;
+        this.product = p;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class OrderDetailsModel implements IModel {
             }
         } catch(SQLException e) {
             throw new DAOException(e);
-        }            
+        }
     }
 
     @Override
@@ -247,45 +247,44 @@ public class OrderDetailsModel implements IModel {
         this.Quantity = the_model.Quantity;
         this.UnitPrice = the_model.UnitPrice;
     }
-    
 
     public long getOrderDetailId() {
-		return OrderDetailId;
-	}
+        return this.OrderDetailId;
+    }
 
-	public void setOrderDetailId(long orderDetailId) {
-		OrderDetailId = orderDetailId;
-	}
+    public void setOrderDetailId(long orderDetailId) {
+        this.OrderDetailId = orderDetailId;
+    }
 
-	public long getOrderId() {
-		return OrderId;
-	}
+    public long getOrderId() {
+        return this.OrderId;
+    }
 
-	public void setOrderId(long orderId) {
-		OrderId = orderId;
-	}
+    public void setOrderId(long orderId) {
+        this.OrderId = orderId;
+    }
 
-	public long getProductId() {
-		return ProductId;
-	}
+    public long getProductId() {
+        return this.ProductId;
+    }
 
-	public void setProductId(long productId) {
-		ProductId = productId;
-	}
+    public void setProductId(long productId) {
+        this.ProductId = productId;
+    }
 
-	public double getUnitPrice() {
-		return UnitPrice;
-	}
+    public double getUnitPrice() {
+        return this.UnitPrice;
+    }
 
-	public void setUnitPrice(double unitPrice) {
-		UnitPrice = unitPrice;
-	}
+    public void setUnitPrice(double unitPrice) {
+        this.UnitPrice = unitPrice;
+    }
 
-	public int getQuantity() {
-		return Quantity;
-	}
+    public int getQuantity() {
+        return this.Quantity;
+    }
 
-	public void setQuantity(int quantity) {
-		Quantity = quantity;
-	}
+    public void setQuantity(int quantity) {
+        this.Quantity = quantity;
+    }
 }
