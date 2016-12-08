@@ -1,6 +1,6 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html;charset=utf-8" %>
 <%@ page import = "voyages.models.implementations.User" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML>
 <html>
@@ -21,17 +21,73 @@
     <link rel="stylesheet" href="http://html.creaws.com/suntour/rs-plugin/css/navigation.css">
     <link rel="stylesheet" href="http://html.creaws.com/suntour/tuner/css/colorpicker.css">
     <link rel="stylesheet" href="http://html.creaws.com/suntour/tuner/css/styles.css">
-    <link type="text/css" rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="<c:url value="/css/style.css"/>" >
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-	<link rel="alternate" type="application/rss+xml" title="Latest snippets from Bootsnipp.com" href="http://bootsnipp.com/feed.rss">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+	<!-- <link rel="alternate" type="application/rss+xml" title="Latest snippets from Bootsnipp.com" href="http://bootsnipp.com/feed.rss">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
+	<!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	    <!-- ! news popup-->
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/bootstrap.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/owl.carousel.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.sticky.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/TweenMax.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/cws_parallax.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.fancybox-media.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/rs-plugin/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.form.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/script.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/bg-video/cws_self_vimeo_bg.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/bg-video/jquery.vimeo.api.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/bg-video/cws_YT_bg.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.tweet.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/tuner/js/colorpicker.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/tuner/js/scripts.js"></script>
+    <script type="text/javascript" src="http://html.creaws.com/suntour/js/retina.min.js"></script>
+    <script type="text/javascript">
+  $(document).ready(function(){
+
+    $('#preloader').fadeOut('slow');
+  });
+</script>
   </head>
   <body>
+	<div class="loading_content" id="preloader" style="overflow: hidden;">
+		<div class="loading">
+			<div class="wrapper_img">
+		    	<div class="cssload-loader">
+		        	<div class="cssload-inner cssload-one">
+			        </div>
+			        <div class="cssload-inner cssload-two">
+			        </div>
+			        <div class="cssload-inner cssload-three">
+			        </div>
+		    	</div>
+		  	</div>
+		</div>
+	</div>
 	<!-- NAVIGATION -- >
     <!-- header page-->
     <header>
@@ -49,9 +105,15 @@
             </div>
             <div class="col-md-6 col-sm-5 text-right">
               <div class="top-right-wrap">
+              	<li class="top-login" >
+                    <a href="<c:url value="products"/>">
+                    <span><i class="fa fa-fighter-jet"></i>&nbsp;Voyages</span>
+                    </a>
+                </li>
                 <div class="curr-wrap dropdown">
                   <div>
                     <ul>
+                    
                       <li><a href="#" class="lang-sel icl-en">Currency<i class="fa fa-angle-down"></i></a>
                         <ul>
                           <li><a href="#">USD</a></li>
@@ -76,10 +138,11 @@
                     </ul>
                   </div>
                 </div>
+                
 				<!-- Cart --> 
-                <div class="top-login" style="margin-right:5%;"><a style="color:white;" href="<c:url value="/cart"/>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></div>
+                <div class="top-login" style="margin-right:5%;"><a style="color:white;" href="<c:url value="/cart"/>"><span class="fa fa-shopping-cart" aria-hidden="true"></span></a></div>
 				<!-- Orders --> 
-				<div class="top-login" style="margin-right:5%;"><a style="color:white;" href="orders"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></div>
+				<div class="top-login" style="margin-right:5%;"><a style="color:white;" href="orders"><span class="fa fa-list" aria-hidden="true"></span></a></div>
 				<!-- Checks to see if user is loged in -->  	
 				<%
 					User authenticatedUser = User.getAuthenticatedUser(request);
@@ -88,7 +151,7 @@
 						<div class="top-login" style="margin-right:5%;"><a href="<c:url value="/login"/>" type="button" class="btn btn-default navbar-btn">Sign in</a></div>
 				<%
 					} if(authenticatedUser != null) { %>
-						<div class="top-login" style="margin-right:5%;"><a href=<c:url value="/profile"/>><span class="glyphicon glyphicon-user"></span> <span class="navbar-text"> <%= authenticatedUser.FirstName %></span></a></div>
+						<div class="top-login" style="margin-right:5%;"><a href=<c:url value="/profile"/>><span class="fa fa-user"></span> <span class="navbar-text"> <%= authenticatedUser.FirstName %></span></a></div>
 				<% } %>			
               </div> <!-- End TOP RIGHT -->
             </div>

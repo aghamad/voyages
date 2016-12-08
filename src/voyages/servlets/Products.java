@@ -4,6 +4,7 @@ package voyages.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import exceptions.ConnexionException;
 import exceptions.DAOException;
 import voyages.beans.Caddy;
+import voyages.db.Connexion;
+import voyages.models.implementations.CityModel;
 import voyages.models.implementations.ProductModel;
 import voyages.models.implementations.User;
 
@@ -74,7 +77,7 @@ public class Products extends BaseServlet {
             throw new ServletException(e);
         }
         if(action.equals("addtocart")) {
-
+        	/*
             List<Long> carts = null;
             if(request.getSession().getAttribute("cart") instanceof List<?>) {
                 carts = (List<Long>) request.getSession().getAttribute("cart");
@@ -87,7 +90,7 @@ public class Products extends BaseServlet {
             carts.add(code);
 
             request.getSession().setAttribute("cart",
-                carts);
+                carts);*/
 
             ProductModel added;
             added = productModel;
@@ -104,6 +107,7 @@ public class Products extends BaseServlet {
 
             caddy.add(added);
 
+            
             request.setAttribute("addedProduct",
                 added);
         } else if(action.equals("sponsor")) {
@@ -119,12 +123,50 @@ public class Products extends BaseServlet {
                 throw new ServletException(e);
             }
         }
-
-        request.getRequestDispatcher("/products.jsp").forward(request,
+        
+        try {
+			this.transmitInformations(request);
+		} catch (ConnexionException e) {
+			throw new ServletException(e);
+		} catch (DAOException e) {
+			throw new ServletException(e);
+		}
+        request.getRequestDispatcher("products.jsp").forward(request,
             response);
 
     }
 
+    private void transmitInformations(HttpServletRequest request) throws ConnexionException, DAOException {
+    	ProductModel productModel;
+		
+    	productModel = new ProductModel(Connexion.getOrSetUpConnexion(getServletContext()));
+
+    	User authUser = User.getAuthenticatedUser(request);
+    	CityModel userCity = null;
+    	if(authUser != null)
+    		userCity = User.getAuthenticatedUser(request).getCity();
+
+        List<ProductModel> initial_products = Collections.emptyList();
+        String type = request.getParameter("type");
+            
+        if(userCity == null)
+            type = "all";
+        if(type == null)
+        	type = "relevant";
+
+        List<ProductModel> vedettes = productModel.findVedettes();
+        
+        /*ProductModel added = null;
+        if(request.getAttribute("addedProduct") instanceof ProductModel)
+            added = (ProductModel) request.getAttribute("addedProduct");*/
+        
+        List<ProductModel> products = initial_products;
+            
+        request.setAttribute("vedettes", vedettes);
+        request.setAttribute("type", type);
+        request.setAttribute("products", products);
+        request.setAttribute("userCity", userCity);
+    }
     @Override
     public void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
@@ -133,52 +175,17 @@ public class Products extends BaseServlet {
 
         if(User.getAuthenticatedUser(request) == null) {
             response.sendRedirect("login");
-
         } else {
-            request.setAttribute("authUser",
-                User.getAuthenticatedUser(request));
-            request.getRequestDispatcher("/products.jsp").forward(request,
-                response);
+			try {
+				this.transmitInformations(request);
+	            
+	            request.getRequestDispatcher("products.jsp").forward(request,
+	                response);
+			} catch (ConnexionException e) {
+				throw new ServletException(e);
+			} catch (DAOException e) {
+				throw new ServletException(e);
+			}
         }
-
-        /*
-           try {
-               ArrayList<Product> products = Product.getProducts();
-               String body = "<table><tr><th>Code</th><td>Nom</td><td>Description</td><td>Image</td></tr>";
-
-               for(int i = 0; i < products.size(); i++) {
-                   Product product = products.get(i);
-                   body += "<tr>";
-
-                   body += "<td>";
-                   body += product.getCode();
-                   body += "</td>";
-
-                   body += "<td>";
-                   body += product.getNom();
-                   body += "</td>";
-
-                   body += "<td>";
-                   body += product.getDescription();
-                   body += "</td>";
-
-                   body += "<td>";
-                   String picturefile = getServletContext().getRealPath("/" + product.getImage());
-                   String imgPath = request.getContextPath() + "/"  + product.getImage();
-                   System.out.println(picturefile);
-                   System.out.println(imgPath);
-                   body += "<img src='" + imgPath+"' />";
-
-                   body += "</td>";
-
-                   body += "</tr>";
-               }
-
-               this.writeResponse(response, body);
-
-           } catch (ProductException e) {
-               throw new ServletException(e);
-        }*/
     }
-
 }

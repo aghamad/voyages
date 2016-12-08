@@ -20,87 +20,88 @@
 
   
     <div class="content-body">
-
-	    <c:if test='${type == "relevant"} '>>
-	    	<a href="?type=all">Afficher tous les voyages</a>
-	    </c:if>
-	    <c:if test='${type == "all"} '>
-	    	<a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : ${userCity.name} </a>
-	    </c:if>
-	    
-	  
-		<c:if test="${addedProduct != null}">
-			<div class="alert alert-success">
-				'${addedProduct.name}' ajouté  votre panier !
-			</div>
-	    </c:if>
+	Type : ${type}
+    <c:if test='${type == "relevant"} '>>
+    	<a href="?type=all">Afficher tous les voyages</a>
+    </c:if>
+    <c:if test='${type == "all"} '>
+    	<a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : ${userCity.name} </a>
+    </c:if>
+    
+  
+	<c:if test="${addedProduct == null}">
+		<div class="alert alert-success">
+			'${addedProduct.Name}' ajouté  votre panier !
+		</div>
+    </c:if>
 
         
-		<c:if test="${fn:length(vedettes) gt 0}">
-			<!-- START BANNER -->
-		      <div class="tp-banner-container">
-		        <div class="tp-banner-slider">
-		          <ul>
-						<c:forEach items="${vedettes}" var="current_vedette">
-		                <li 
-		                data-masterspeed="700"
-		                 data-slotamount="7"
-		                  data-transition="fade">
-		                  <img
-		                  	src="http://html.creaws.com/suntour/rs-plugin/assets/loader.gif" 
-		                  	data-lazyload="<c:url value="images/${current_vedette.image}"/>"
-		                  	data-bgposition="center" 
-		                  	alt=""
-		                  	data-kenburns="on"
-		                  	data-duration="30000" 
-		                  	data-ease="Linear.easeNone" 
-		                  	data-scalestart="100" 
-		                  	data-scaleend="120" 
-		                  	data-rotatestart="0" 
-		                  	data-rotateend="0" 
-		                  	data-offsetstart="0 0" 
-		                  	data-offsetend="0 0" 
-		                  	data-bgparallax="10">
-		                  	<div 
-		                  		data-x="['center','center','center','center']"
-		                  		data-y="center" 
-		                  		data-transform_in="x:-150px;opacity:0;s:1500;e:Power3.easeInOut;" 
-		                  		data-transform_out="x:150px;opacity:0;s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
-		                  		data-start="400"
-		                  		class="tp-caption sl-content">
-				                <div class="sl-title-top">Welcome to</div>
-				                <div class="sl-title">${current_vedette.name} </div>
-				                <div class="sl-title-bot">Starting <span>${current_vedette.price}$</span> </div>
-				              </div>
-				              
-				              <!-- 
-		                    <h1>${vedette.Name}></h1>
-		                    <p>${vedette.Description}</p>
-		                    <p>
-		                    <b>${vedette.Price} $</b> seulement <br/>
-		                    <form method=post>
-		                                    <input type=hidden name=action value=addtocart />
-		                                    <input type=hidden name=productCode value="${vedette.productId}" />
-		                                        <button type=submit class="btn btn-success btn-lg">Add to cart</button>
-		                                        </form>
-		                    </p>
-		                 -->
-		                 
-		                <!-- 
-		                <div class="col-md-4">
-		                <a href='<c:url value="/products/detail/?id=${vedette.productId}" /> '>
-		                    <img style="width:350px" class="group list-group-image" src="images/${ vedette.image } "  />
-		                    
-		                    </a>
-		                </div> -->
-		                </li>
-		                </c:forEach>
-		                </ul>
-		            </div>
-		            <!-- slider info-->
+	<c:if test="${fn:length(vedettes) gt 0}">
+
+    <!-- START BANNER -->
+      <div class="tp-banner-container">
+        <div class="tp-banner-slider">
+          <ul>
+				<c:forEach items="vedettes" var="current_vedette">
+                <li 
+                data-masterspeed="700"
+                 data-slotamount="7"
+                  data-transition="fade">
+                  <img
+                  	src="http://html.creaws.com/suntour/rs-plugin/assets/loader.gif" 
+                  	data-lazyload="${current_vedette.image}"
+                  	data-bgposition="center" 
+                  	alt=""
+                  	data-kenburns="on"
+                  	data-duration="30000" 
+                  	data-ease="Linear.easeNone" 
+                  	data-scalestart="100" 
+                  	data-scaleend="120" 
+                  	data-rotatestart="0" 
+                  	data-rotateend="0" 
+                  	data-offsetstart="0 0" 
+                  	data-offsetend="0 0" 
+                  	data-bgparallax="10">
+                  	<div 
+                  		data-x="['center','center','center','center']"
+                  		data-y="center" 
+                  		data-transform_in="x:-150px;opacity:0;s:1500;e:Power3.easeInOut;" 
+                  		data-transform_out="x:150px;opacity:0;s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                  		data-start="400"
+                  		class="tp-caption sl-content">
+		                <div class="sl-title-top">Welcome to</div>
+		                <div class="sl-title">${current_vedette.name}></div>
+		                <div class="sl-title-bot">Starting <span>${current_vedette.price}></span> per night</div>
+		              </div>
+		              
+		              <!-- 
+                    <h1>${vedette.Name}></h1>
+                    <p>${vedette.Description}</p>
+                    <p>
+                    <b>${vedette.Price} $</b> seulement <br/>
+                    <form method=post>
+                                    <input type=hidden name=action value=addtocart />
+                                    <input type=hidden name=productCode value="${vedette.productId}" />
+                                        <button type=submit class="btn btn-success btn-lg">Add to cart</button>
+                                        </form>
+                    </p>
+                 -->
+                 
+                <!-- 
+                <div class="col-md-4">
+                <a href='<c:url value="/products/detail/?id=${vedette.productId}" /> '>
+                    <img style="width:350px" class="group list-group-image" src="images/${ vedette.image } "  />
+                    
+                    </a>
+                </div> -->
+                </li>
+                </c:forEach>
+                </ul>
+            </div>
+            <!-- slider info-->
 	        <div class="slider-info-wrap clearfix">
 	          <div class="slider-info-content">
-				<c:forEach items="${vedettes}" var="current_vedette">
+				<c:forEach items="vedettes" var="current_vedette">
 		            <div class="slider-info-item">
 		              <div class="info-item-media">
 		              	<img src="images/${current_vedette.image}"
@@ -116,20 +117,20 @@
 		              </div>
 		              <div class="info-item-content">
 		                <div class="main-title">
-		                  <h3 class="title"><span class="font-4">${current_vedette.name} #${current_vedette.productId}</span> </h3>
+		                  <h3 class="title"><span class="font-4">${current_vedette.name}</span> </h3>
 		                  <div class="price">
-		                  	<span>${current_vedette.price}</span> per night</div>
+		                  	<span>$105</span> per night</div>
 		                  
-		                  	<a href="<c:url value="/products/detail/?id=${current_vedette.productId}" />" class="button">Details</a>
+		                  	<a href="<c:url value="/products/detail/?id=${vedette.productId}" />" class="button">Details</a>
 		                </div>
 		              </div>
 		            </div>
 	            </c:forEach>
 	        </div>
         </div>
-		    </div>
-		</c:if>
-		  <!--  END BANNER -->
+    </div>
+    </c:if>
+    <!--  END BANNER -->
 
 
     <c:if test="${fn:length(products) gt 0}">
@@ -150,7 +151,7 @@
         </div>
         <div class="features-tours-full-width">
           <div class="features-tours-wrap clearfix">
-          <c:forEach items="${products}" var="product">
+          <c:forEach items="products" var="product">
             <div class="features-tours-item">
               <div class="features-media">
               	<img
@@ -162,7 +163,7 @@
                   <p class="info-text">${product.description}.</p>
                 </div>
                 <div class="features-info-bot">
-                  <h4 class="title"><span class="font-4">${product.name} #${product.productId}</span> </h4>
+                  <h4 class="title"><span class="font-4">${product.name}</span> </h4>
                   <a
                    href='<c:url value="/products/detail/?id=${product.productId}" />'
                    class="button">Details</a>
