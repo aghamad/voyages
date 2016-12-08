@@ -65,7 +65,7 @@ public class OrderDetailsModel implements IModel {
     public ProductModel getProduct() throws DAOException {
         if(this.product == null) {
             ProductModel model = new ProductModel(this);
-            model.ProductId = this.ProductId;
+            model.ProductId = new Long(this.ProductId);
             model.read();
             this.product = model;
         }
@@ -82,7 +82,7 @@ public class OrderDetailsModel implements IModel {
             OrderDetailsModel the_model = (OrderDetailsModel) model;
             PreparedStatement getByIdStatement = getConnexion().getConnection().prepareStatement(OrderDetailsModel.GET_BY_ID);
             getByIdStatement.setLong(1,
-                the_model.OrderId);
+                the_model.OrderDetailId);
 
             try(
                 ResultSet rset = getByIdStatement.executeQuery()) {
@@ -117,7 +117,7 @@ public class OrderDetailsModel implements IModel {
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
-                    throw new SQLException("Creating user failed, no rows affected.");
+                    throw new SQLException("Creating order item failed, no rows affected.");
                 }
 
                 try(
@@ -125,7 +125,7 @@ public class OrderDetailsModel implements IModel {
                     if(generatedKeys.next()) {
                         this.OrderDetailId = generatedKeys.getLong(1);
                     } else {
-                        throw new SQLException("Creating user failed, no ID obtained.");
+                        throw new SQLException("Creating order item failed, no ID obtained.");
                     }
                 }
                 return affectedRows;

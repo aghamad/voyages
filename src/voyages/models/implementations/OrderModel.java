@@ -21,11 +21,13 @@ public class OrderModel implements IModel {
 
     public long CustomerId;
 
+    public String PaymentId;
+
     public Date OrderDate;
 
-    private static String columns = "OrderId, CustomerId, OrderDate";
+    private static String columns = "OrderId, CustomerId, OrderDate, PaymentId";
 
-    private static String insert_columns = "CustomerId";
+    private static String insert_columns = "CustomerId, PaymentId";
 
     private static String GET_ALL = "SELECT "
         + columns
@@ -41,7 +43,7 @@ public class OrderModel implements IModel {
 
     private static String CREATE = "INSERT INTO Orders ("
         + insert_columns
-        + ") VALUES(?) ";
+        + ") VALUES(?, ?) ";
 
     @Override
     public void setConnexion(Connexion conn) {
@@ -92,6 +94,8 @@ public class OrderModel implements IModel {
                 PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(CREATE)) {
                 createStatement.setLong(1,
                     the_order.CustomerId);
+                createStatement.setString(2,
+                    the_order.PaymentId);
 
                 int affectedRows = createStatement.executeUpdate();
                 if(affectedRows == 0) {
@@ -180,6 +184,7 @@ public class OrderModel implements IModel {
             OrderModel order = new OrderModel(this);
             order.OrderId = rset.getInt("OrderId");
             order.CustomerId = rset.getInt("CustomerId");
+            order.PaymentId = rset.getString("PaymentId");
 
             try {
                 order.OrderDate = DateParser.parse(rset.getString("OrderDate"));
@@ -216,6 +221,7 @@ public class OrderModel implements IModel {
         this.CustomerId = the_model.CustomerId;
         this.OrderId = the_model.OrderId;
         this.OrderDate = the_model.OrderDate;
+        this.PaymentId = the_model.PaymentId;
     }
 
     public List<OrderDetailsModel> getItems() throws DAOException {
@@ -246,5 +252,13 @@ public class OrderModel implements IModel {
 
     public void setOrderDate(Date orderDate) {
         this.OrderDate = orderDate;
+    }
+
+    public String getPaymentId() {
+        return this.PaymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.PaymentId = paymentId;
     }
 }

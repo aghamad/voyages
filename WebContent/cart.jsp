@@ -119,7 +119,7 @@
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>Total $<%= total %></strong></td>
 							<td>
-                                                        <form action='<c:url value="checkout"/>' method="post">
+                                                        <form action='<c:url value="checkout"/>' method="get">
                                                         <button type=submit  class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button>
                                                         </form>
                                                         </td>
