@@ -132,7 +132,7 @@ public class Products extends BaseServlet {
         response.setContentType(CONTENT_TYPE);
 
         if(User.getAuthenticatedUser(request) == null) {
-            response.sendRedirect("/login");
+            response.sendRedirect("login");
 
         } else {
             request.setAttribute("authUser",

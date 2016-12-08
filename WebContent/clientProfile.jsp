@@ -32,7 +32,7 @@
 		<c:set var="total" value="${0}"/>
 		
 		<c:forEach items="${client.orders}" var="order">
-			<h1>Order #${order.orderId}</h1>
+			<h1>Order ${order.orderId}</h1>
 			
 			
  <table id="cart" class="table table-hover table-condensed">

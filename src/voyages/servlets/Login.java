@@ -48,7 +48,6 @@ public class Login extends BaseServlet {
         try {
             authUser = userDAO.auth(email,
                 password);
-            //request.setAttribute("authUser", authUser);
 
             if(authUser != null) {
                 request.getSession(true).setAttribute("authUser",
@@ -69,7 +68,6 @@ public class Login extends BaseServlet {
                 request.getRequestDispatcher("/login.jsp").forward(request,
                     response);
             }
-
         } catch(IOException e) {
             throw new ServletException(e);
         } catch(DAOException e) {

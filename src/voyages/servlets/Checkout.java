@@ -47,7 +47,7 @@ public class Checkout extends BaseServlet {
 
         User authUser = User.getAuthenticatedUser(request);
         if(authUser == null) {
-            response.sendRedirect("/Commerce-Project1-context-root/login");
+            response.sendRedirect("login");
         } else {
             //request.getRequestDispatcher("/orders").forward(request, response);
         }
@@ -89,7 +89,7 @@ public class Checkout extends BaseServlet {
         request.getSession(true).setAttribute("caddy",
             new Caddy());
 
-        response.sendRedirect("/Commerce-Project1-context-root/orders");
+        response.sendRedirect("orders");
     }
 
     @Override

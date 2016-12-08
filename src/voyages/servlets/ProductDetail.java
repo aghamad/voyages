@@ -32,7 +32,7 @@ public class ProductDetail extends BaseServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        long id = Long.parseLong(request.getParameter("id"));
         if(id == 0) {
             throw new ServletException("no id given");
         }
