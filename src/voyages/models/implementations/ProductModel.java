@@ -21,7 +21,7 @@ public class ProductModel implements IModel {
 
     private Connexion connexion = null;
 
-    public Long ProductId;
+    public Long ProductId = new Long(0);
 
     public String Name;
 
@@ -302,6 +302,7 @@ public class ProductModel implements IModel {
 
             try(
                 PreparedStatement createStatement = getConnexion().getConnection().prepareStatement(UPDATE)) {
+            	
                 createStatement.setString(1,
                     the_product.Name);
                 createStatement.setString(2,
@@ -312,12 +313,13 @@ public class ProductModel implements IModel {
                     the_product.Price);
                 createStatement.setInt(5,
                     the_product.IsVedette);
-                createStatement.setLong(6,
-                    the_product.ProductId.longValue());
-                createStatement.setString(7,
+                
+                createStatement.setString(6,
                     DateParser.format(the_product.DateDebut));
-                createStatement.setString(8,
+                createStatement.setString(7,
                     DateParser.format(the_product.DateFin));
+                createStatement.setLong(8,
+                        the_product.ProductId.longValue());
                 int affectedRows = createStatement.executeUpdate();
 
                 return affectedRows;

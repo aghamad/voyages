@@ -45,8 +45,9 @@ public class Ajout extends BaseServlet {
             new_voyage = new ProductModel(getConnexion());
 
             new_voyage.Name = request.getParameter("Nom");
+            new_voyage.Image = request.getParameter("Image");
             new_voyage.Price = Double.parseDouble(request.getParameter("Price"));
-            new_voyage.Image = "";
+            //new_voyage.Image = "";
             new_voyage.IsVedette = 0;
             new_voyage.Description = request.getParameter("Description");
             try {
@@ -69,6 +70,8 @@ public class Ajout extends BaseServlet {
                 new_escale = new EscaleModel(getConnexion());
                 // get CityId avec le nom de la city
 
+                new_escale.setImage(request.getParameter("Image"
+                    + i));
                 new_escale.NomActivite = request.getParameter("NomActivite"
                     + i);
                 new_escale.DescriptionActivite = request.getParameter("DescriptionActivite"

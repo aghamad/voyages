@@ -31,7 +31,9 @@ public class VoyageList extends AdminServlet implements Servlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//super.doGet(request, response);
+		
 		ProductModel model = null;
 		try {
 			model = new ProductModel(getConnexion());
@@ -56,40 +58,51 @@ public class VoyageList extends AdminServlet implements Servlet {
 		ProductModel productModel = null;
 		long id = 0;
 		
-    	try {
-    		id = Long.parseLong(request.getParameter("productCode"));
-    	} catch(NumberFormatException e) {
-    		throw new ServletException(e);
-    	}
-    	
-        if(id == 0) {
-            throw new ServletException("no id given");
-        }
-        try {
-        	productModel = new ProductModel(getConnexion());
+		String action = request.getParameter("action");
+		
+		if(action.equals("sponsor") || action.equals("unsponsor")) {
+			
+	    	try {
+	    		id = Long.parseLong(request.getParameter("productCode"));
+	    	} catch(NumberFormatException e) {
+	    		throw new ServletException(e);
+	    	}
+	    	
 
-        	productModel.ProductId = id;
-        	productModel.read();
-        } catch(
-            ConnexionException
-            | DAOException e) {
-            throw new ServletException(e);
-        }
-        // String action = request.getParameter("action");
- 
-		//if(action.equals("sponsor")) {
-	            productModel.IsVedette = 1;
-	            try {
+	        if(id == 0) {
+	            throw new ServletException("no id given");
+	        }
+	        try {
+	        	productModel = new ProductModel(getConnexion());
+	
+	        	productModel.ProductId = id;
+	        	productModel.read();
+	        } catch(
+	            ConnexionException
+	            | DAOException e) {
+	            throw new ServletException(e);
+	        }
+	        // String action = request.getParameter("action");
+	 
+			//if(action.equals("sponsor")) {
+	            productModel.IsVedette = (action.equals("sponsor") ? 1 : 0);
+	            /*
+	            if(productModel == productModel)
+	            throw new ServletException("ISVEDETTE  " + productModel.IsVedette);
+	            */
+	            
+	            /*try {
 	                productModel.bulk_unvedette();
 	            } catch(DAOException daoException) {
 	                throw new ServletException(daoException);
-	            }
+	            }*/
 	            try {
 	                productModel.update();
 	            } catch(DAOException e) {
 	                throw new ServletException(e);
 	            }
 	   //}
+		}
 	        
 		doGet(request, response);
 	}

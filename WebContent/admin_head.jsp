@@ -6,10 +6,11 @@
           <li class="active">
           <a href="<c:url value='/admin/ajout'/>">Ajout de voyages</a></li>
           <li><a href="<c:url value='/admin/client'/>">Clients</a></li>
+          <li><a href="<c:url value='/admin/ajout'/>">Nouveau voyage</a></li>
           <li><a href="<c:url value='/admin/voyages'/>">Voyages</a></li>
           <li><a href="<c:url value='/admin/recommandations'/>">Recommandations</a></li>
 		
         </ul>
       </div>
   </div>
-        <div id="main">
+        <div id="main" class="col-md-9">

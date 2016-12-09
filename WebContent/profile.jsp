@@ -12,7 +12,7 @@
 <%@ include file="admin_head.jsp" %>
 <% } %>
         <div class="container">
-        
+        <a href="<c:url value="/disconnect" />" ><i class="fa fa-unlock"></i> Se déconnecter</a>
          <div class="row">
          
          <%
@@ -51,7 +51,7 @@
 							<select name=CityId id=CityId class="form-control" required autofocus>
 						   		<c:forEach items="${cities}" var="City">
 									<option selected="${City.cityId == authUser.cityId}" value="${City.cityId}" >${City.name}</option>
-								</c:forEach>>
+								</c:forEach>
 						  	</select>
 					  	</div>
 					  	

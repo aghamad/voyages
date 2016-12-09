@@ -82,6 +82,7 @@
     <!-- <script type="text/javascript" src="http://html.creaws.com/suntour/tuner/js/colorpicker.js"></script>
     <script type="text/javascript" src="http://html.creaws.com/suntour/tuner/js/scripts.js"></script>-->
     <script type="text/javascript" src="http://html.creaws.com/suntour/js/retina.min.js"></script>
+    <script src="https://js.braintreegateway.com/js/braintree-2.30.0.min.js"></script>
     <script type="text/javascript">
   $(document).ready(function(){
 

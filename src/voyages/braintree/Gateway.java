@@ -7,6 +7,7 @@ package voyages.braintree;
 import java.math.BigDecimal;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
+import com.braintreegateway.PayPalAccount;
 import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
 import com.braintreegateway.TransactionRequest;
@@ -24,6 +25,13 @@ public class Gateway {
 
     public static String GenerateToken() {
         return gateway.clientToken().generate();
+    }
+    
+    public static PayPalAccount GetPaypalAccount(String token) {
+        return gateway.paypalAccount().find(token);
+    }
+    public static Transaction GetPayment(String token) {
+        return gateway.transaction().find(token);
     }
 
     public static Result<Transaction> DoTransaction(String nonce,

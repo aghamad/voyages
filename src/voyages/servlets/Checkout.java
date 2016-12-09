@@ -141,7 +141,7 @@ public class Checkout extends BaseServlet {
         int price = 0;
         for(int i = 0 ; i < items.size() ; i++) {
             ProductModel productModel = items.get(i).getProduct();
-            price += productModel.Price;
+            price += productModel.Price * items.get(i).getQuantity();
         }
 
         request.getSession(true).setAttribute("caddyPrice",

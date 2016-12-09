@@ -6,6 +6,7 @@
 <%@ page import = "voyages.models.implementations.OrderModel" %>
 <%@ page import = "voyages.models.implementations.OrderDetailsModel" %>
 <%@ page import = "voyages.models.implementations.User" %>
+<%@ page import = "com.braintreegateway.Transaction" %>
 <%@ page import = "voyages.db.Connexion" %>
 <%@ page import = "java.io.InputStream" %>
 <%@ page import = "java.io.FileInputStream" %>
@@ -50,11 +51,11 @@ for(int i = 0; i < pastOrders.size(); i++) {
  <table id="cart" class="table table-hover table-condensed">
     				<thead>
 						<tr>
-							<th style="width:50%">Product</th>
-							<th style="width:10%">Price</th>
-							<th style="width:8%">Quantity</th>
-							<th style="width:22%" class="text-center">Subtotal</th>
-							<th style="width:10%"></th>
+							<th style="width:50%">Produit</th>
+							<th style="width:10%">Prix</th>
+							<th style="width:8%">Nombre de Passagers</th>
+							<th style="width:22%" class="text-center">Sous-total</th>
+							<th style="width:10%">Paiement</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,7 +74,7 @@ for(int i = 0; i < pastOrders.size(); i++) {
 			<div class="row">
 				<div class="col-sm-2 hidden-xs">
 					<!--<img style="width:100px" class="group list-group-image" src="data:image/gif;base64, product.getImageAsBase64()  " />-->
-                                        <img style="width:50px" class="group list-group-image" src="images/<%= product.Image  %>" />
+					<img style="width:50px" class="group list-group-image" src="images/<%= product.Image %>" />
 				</div>
 				<div class="col-sm-10">
 					<h4 class="nomargin">
@@ -83,19 +84,36 @@ for(int i = 0; i < pastOrders.size(); i++) {
 				</div>
 			</div>
 		</td>
-		<td data-th="Price"><%=
+		<td data-th="Price">
+		<%=
 		product.Price
 		%>
 		</td>
 		
 		<td data-th="Quantity">
-			<!--<input type="number" name="itemQuantity.<%= product.ProductId %>" class="form-control text-center" value="<%= item.Quantity %>">-->
-                        X <%= item.Quantity %>
+			X <%= item.Quantity %>
 		</td>
-		<td data-th="Subtotal" class="text-center"><%=
-		item.UnitPrice * item.Quantity
-		%></td>
-                
+		<td data-th="Subtotal" class="text-center">
+			<%= item.UnitPrice * item.Quantity %>
+		</td>
+		<% if(j == 0) {
+			Transaction transaction = order.GetPayment(); 
+			if(transaction != null) {
+			%>
+                <td data-th="Paiement" rowspan="<%= items.size() %>">
+	                Montant : <%= transaction.getAmount() %> <br/>
+	                Adresse : <%= transaction.getBillingAddress() %> <br/>
+	                Type de carte : <%= transaction.getCreditCard().getCardType() %> <br/>
+	                Numéro de carte : **** **** **** <%= transaction.getCreditCard().getLast4() %> <br/>
+	                Propriétaire de la carte : <%= transaction.getCreditCard().getCardholderName() %> <br/>
+	                Date d'expiration : <%= transaction.getCreditCard().getExpirationDate() %>/<%= transaction.getCreditCard().getExpirationMonth() %><br/>
+                	
+                </td>
+        	<% } else {
+        		%> Non indiqué <%
+        	}
+		}
+		%>
                 </tr>
                 <!--
 		<td class="actions" data-th="">
@@ -121,6 +139,7 @@ for(int i = 0; i < pastOrders.size(); i++) {
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>Total $<%= total %></strong></td>
 							<td>
+							
                                                         <!--
                                                         <button type=submit  class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button>
                                                         -->

@@ -32,8 +32,8 @@ public class ClientList extends AdminServlet {
     protected void doGet(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        super.doGet(request,
-            response);
+        /*super.doGet(request,
+            response);*/
         if(hasRedirected()) {
             return;
         }
@@ -62,8 +62,8 @@ public class ClientList extends AdminServlet {
     protected void doPost(HttpServletRequest request,
         HttpServletResponse response) throws ServletException,
         IOException {
-        super.doPost(request,
-            response);
+        /*super.doPost(request,
+            response);*/
 
         User model;
         try {

@@ -8,7 +8,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.braintreegateway.PayPalAccount;
+import com.braintreegateway.Transaction;
+
 import exceptions.DAOException;
+import voyages.braintree.Gateway;
 import voyages.db.Connexion;
 import voyages.models.interfaces.IModel;
 import voyages.models.utils.DateParser;
@@ -61,6 +66,17 @@ public class OrderModel implements IModel {
 
     public OrderModel(IModel model) {
         setConnexion(model.getConnexion());
+    }
+    
+    public PayPalAccount getPaypalAccount() {
+    	return Gateway.GetPaypalAccount(this.getPaymentId());
+    }
+    public Transaction GetPayment() {
+    	try {
+    		return Gateway.GetPayment(this.getPaymentId());
+    	} catch(com.braintreegateway.exceptions.NotFoundException e) {
+    		return null;
+    	}
     }
 
     @Override

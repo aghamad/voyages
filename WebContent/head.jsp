@@ -10,12 +10,9 @@
   font-size:20px;
   font-weight:1000;
   }
-  .inner-nav {
-  
-  )
-  .big_butt{
+ 
+  .big_butt {
     z-index: 1;
-
     font-size: 13px;
     color: #ffc107;
     border: 1px solid #ffc107;
@@ -29,7 +26,7 @@
     font-weight: 700;
   	
   }
-  .big_butt:hover {
+  .big_butt:not[.disabled]:hover {
           color: #ffffff;
     background: #ffc107;
         transition: all 0.3s;
@@ -94,12 +91,12 @@
             </div>
             <div class="col-md-6 col-sm-5 text-right">
               <div class="top-right-wrap">
-              	<div class="top-login" >
+              	<!--<div class="top-login" >
                     <a href="<c:url value="products"/>">
                     <span><i class="fa fa-fighter-jet"></i>&nbsp;Voyages</span>
                     </a>
-                </div>
-                &nbsp;
+                </div> -->
+                
                 <!--
                 <div class="curr-wrap dropdown">
                   <div>
@@ -135,7 +132,7 @@
 				<!-- Cart --> 
                 <div class="top-login" style="margin-right:5%;"><a style="color:white;" href="<c:url value="/cart"/>"><span class="fa fa-shopping-cart" aria-hidden="true"></span></a></div>
 				<!-- Orders --> 
-				<div class="top-login" style="margin-right:5%;"><a style="color:white;" href="orders"><span class="fa fa-list" aria-hidden="true"></span></a></div>
+				<div class="top-login" style="margin-right:5%;"><a style="color:white;" href="<c:url value="/orders"/>"><span class="fa fa-list" aria-hidden="true"></span></a></div>
 				<!-- Checks to see if user is loged in -->  	
 				<%
 					User authenticatedUser = User.getAuthenticatedUser(request);
@@ -166,12 +163,22 @@
           <div class="inner-nav desktop-nav">
             <ul class="clearlist">
               <!-- Item With Sub-->
-              <li><a href="index.html" class="mn-has-sub active">Voyages <i class="fa fa-angle-down button_open"></i></a>
+              <li>
+              	<a 
+              		href="<c:url value="/products"/>"
+               		class="mn-has-sub active">
+               		Voyages <i class="fa fa-angle-down button_open"></i>
+                </a>
                 <ul class="mn-sub">
-                  <li class="active"><a href="index.html">Standart Slider</a></li>
-                  <li><a href="index-search.html">Main Search</a></li>
-                  <li><a href="index-slider.html">Full Slider</a></li>
-                  <li><a href="index-video.html">Video Slider</a></li>
+                  
+                  	<c:if test="${userCity != null}">
+                  		<li class="active">
+                  			<a href="<c:url value="/products?type=relevant"/>">Voyages de ${userCity.name}</a>
+                  		</li>
+                  	</c:if>
+                  	<li>
+                  		<a href="<c:url value="/products?type=all"/>">Tous les voyages</a>
+                    </li>
                 </ul>
               </li>
               <!-- End Item With Sub-->
@@ -186,11 +193,11 @@
                 </ul>
                 <!-- End Sub--
               </li>-->
-              <!-- End Item With Sub-->
-              <li class="slash">/</li>
-              <!-- Item With Sub-->
+              <!-- End Item With Sub
+              <li class="slash">/</li>-->
+              <!-- Item With Sub--
               <li class="megamenu"><a href="page-about-us.html" class="mn-has-sub">Pages <i class="fa fa-angle-down button_open"></i></a>
-                <!-- Sub-->
+                <!-- Sub--
                 <ul class="mn-sub mn-has-multi">
                   <li class="mn-sub-multi"><a class="mn-group-title">Pages</a>
                     <ul>
@@ -223,24 +230,24 @@
                     </ul>
                   </li>
                 </ul>
-                <!-- End Sub-->
-              </li>
+                <!-- End Sub--
+              </li>-->
               <!-- End Item With Sub-->
               <!-- span /-->
               <!-- Item With Sub-->
-              <!-- End Item With Sub-->
-              <li class="slash">/</li>
-              <!-- Item With Sub-->
+              <!-- End Item With Sub
+              <li class="slash">/</li>-->
+              <!-- Item With Sub--
               <li><a href="shop-grid.html" class="mn-has-sub">Shop <i class="fa fa-angle-down button_open"></i></a>
-                <!-- Sub-->
+                <!-- Sub--
                 <ul class="mn-sub">
                   <li><a href="shop-grid.html">Shop Grid</a></li>
                   <li><a href="shop-cart.html">Shop Cart</a></li>
                   <li><a href="shop-checkout.html">Shop Checkout</a></li>
                   <li><a href="shop-single.html">Shop Single Product</a></li>
                 </ul>
-                <!-- End Sub-->
-              </li>
+                <!-- End Sub--
+              </li>-->
               <!-- End Item With Sub-->
               <li class="slash">/</li>
               <!-- Item-->

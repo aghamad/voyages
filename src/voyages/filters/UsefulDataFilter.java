@@ -57,8 +57,9 @@ public class UsefulDataFilter implements Filter {
             throw new ServletException(connectionException);
         }
 
-        request.setAttribute("authUser",
-            User.getAuthenticatedUser((HttpServletRequest) request));
+        User authUser = User.getAuthenticatedUser((HttpServletRequest) request);
+        request.setAttribute("authUser", authUser);
+        request.setAttribute("isAuthenticated", authUser != null);
 
         if(cities == null) {
             CityModel cityModel = new CityModel(connexion);
@@ -78,6 +79,16 @@ public class UsefulDataFilter implements Filter {
                 throw new ServletException(e);
             }
         }
+        
+        CityModel userCity = null;
+    	if(authUser != null) {
+			try {
+				userCity = authUser.getCity();
+			} catch (DAOException e) {
+				throw new ServletException(e);
+			}
+    	}
+    	request.setAttribute("userCity", userCity);
 
         request.setAttribute("countries",
             countries);

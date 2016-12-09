@@ -26,6 +26,7 @@
 		         
 		         	 <!-- Add voyage -->
 		             <input type="text" name=Nom class="form-control" placeholder="Nom" required autofocus>
+		             <input type="text" name=Image class="form-control" placeholder="Chemin vers l'image" required autofocus>
 		             <input type="text" name=Price class="form-control" placeholder="Prix" required autofocus>
 		             <textarea name="Description" rows="4" cols="50" placeholder="Description" style="width:100%;"></textarea>
 		             
@@ -50,13 +51,17 @@
 						 <label for="NomActivite{{$index}}">Nom de l'activité</label>
 						 <br />
 				      	 <input name="NomActivite{{$index}}" type="text" ng-model="item.NomActivite" required autofocus>				      	 
-				      	 <br />   	 
+				      	 <br />
+				      	 <label for="ImageActivite{{$index}}">Image de l'activité</label>
+				      	 <br />
+						 <input type="text" name=Image class="form-control" placeholder="Chemin vers l'image" required="{{$index != 0}}" autofocus>
+						    	 
 				      	 <label for="DescriptionActivite{{$index}}">Description de l'activité</label>
 				      	 <textarea ng-model="item.DescriptionActivite" name="DescriptionActivite{{$index}}" rows="4" cols="50" style="width:100%;" required autofocus></textarea>				      	 
 				      	 <br />
-				      	 <label for="DateEscale{{$index}}">Date de l'escale en format DD-MM-YYYY: </label>
+				      	 <label for="DateEscale{{$index}}">Date de l'escale au format DD-MM-YYYY: </label>
 				      	 <br />
-				      	 <input name="DateEscale{{$index}}" class=dateInput id="EscaleDate" type="text" ng-model="item.DateEscale" required autofocus>
+				      	 <input name="DateEscale{{$index}}" class=dateInput id="EscaleDate{{$index}}" type="text" required autofocus>
 				      	 <br />
 				      	 <button class="remove btn-danger" ng-show="$last" ng-click="removeItem($event)">Delete</button>
 				      	</div>		
@@ -101,14 +106,14 @@
 		
 		
 	    var newItemNo = $scope.items.length + 1;
+	    
 	    if (newItemNo == 1){
 	    	// Montreal par defaut
 		    $scope.items.push({
 		    	id: "item" + newItemNo,
-		    	CityName: "Montreal",
-		    	NomActivite: "Promenade",
-		    	DescriptionActivite: "Une petite promenade",
-		    	DateEscale: "DD-MM-YYY"
+		    	NomActivite: "Ville de départ et d'arrivée",
+		    	DescriptionActivite: "Notez qu'il n'est pas nécessaire de rajouter cette ville en tant qu'escale de fin. Cela se fera automatiquement.",
+		    	DateEscale: $('#datedebut').datepicker({ dateFormat: 'dd-mm-yy' }).val()
 		    });
 	    } else {
 		    $scope.items.push({
@@ -116,10 +121,12 @@
 		    	CityName: "",
 		    	NomActivite: "",
 		    	DescriptionActivite: "",
-		    	DateEscale: ""
+
 		    });
 	    }
-	    $('.dateInput').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+	    setTimeout(500, function() {
+	    	$('#EscaleDate' + (newItemNo-1)).datepicker({ dateFormat: 'dd-mm-yy' }).val();
+	    });
 		
 	  };
 	    
