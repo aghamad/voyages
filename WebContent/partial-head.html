@@ -5,36 +5,6 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-  <style>
-  .really_big {
-  font-size:20px;
-  font-weight:1000;
-  }
-  .inner-nav {
-  
-  )
-  .big_butt{
-    z-index: 1;
-
-    font-size: 13px;
-    color: #ffc107;
-    border: 1px solid #ffc107;
-    padding: 1px 10px;
-    margin-right: 10px;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s;
-    text-transform: uppercase;
-    font-weight: 700;
-  	
-  }
-  .big_butt:hover {
-          color: #ffffff;
-    background: #ffc107;
-        transition: all 0.3s;
-}}
-  </style>
     <title>VoyagesInc</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -79,7 +49,7 @@
 	</div>
 	<!-- NAVIGATION -- >
     <!-- header page-->
-    <header>
+    <header style="display:none">
       <!-- site top panel-->
       <div class="site-top-panel">
         <div class="container p-relative">
@@ -94,13 +64,11 @@
             </div>
             <div class="col-md-6 col-sm-5 text-right">
               <div class="top-right-wrap">
-              	<div class="top-login" >
+              	<li class="top-login" >
                     <a href="<c:url value="products"/>">
                     <span><i class="fa fa-fighter-jet"></i>&nbsp;Voyages</span>
                     </a>
-                </div>
-                &nbsp;
-                <!--
+                </li>
                 <div class="curr-wrap dropdown">
                   <div>
                     <ul>
@@ -116,8 +84,6 @@
                     </ul>
                   </div>
                 </div>
-                -->
-                <!--  
                 <div class="lang-wrap dropdown" style="margin-right:8%" >
                   <div>
                     <ul>
@@ -131,7 +97,7 @@
                     </ul>
                   </div>
                 </div>
-                -->
+                
 				<!-- Cart --> 
                 <div class="top-login" style="margin-right:5%;"><a style="color:white;" href="<c:url value="/cart"/>"><span class="fa fa-shopping-cart" aria-hidden="true"></span></a></div>
 				<!-- Orders --> 
@@ -144,21 +110,17 @@
 						<div class="top-login" style="margin-right:5%;"><a href="<c:url value="/login"/>" type="button" class="btn btn-default navbar-btn">Sign in</a></div>
 				<%
 					} if(authenticatedUser != null) { %>
-						<div class="top-login">
-							<a href="<c:url value="/profile"/>">
-								<i class="fa fa-user"></i>
-							 	<span ><%= authenticatedUser.FirstName %></span>
-							</a>
-						</div>
+						<div class="top-login" style="margin-right:5%;"><a href='<c:url value="/profile"/>' ><span class="fa fa-user"></span> <span class="navbar-text"> <%= authenticatedUser.FirstName %></span></a></div>
 				<% } %>			
               </div> <!-- End TOP RIGHT -->
             </div>
           </div>
         </div>
       </div>
+      
       <!-- ! site top panel-->
       <!-- Navigation panel-->
-      <nav class="main-nav js-stick">
+      <nav  class="main-nav js-stick">
         <div class="full-wrapper relative clearfix container">
           <!-- Logo ( * your text or image into link tag *)-->
           <div class="nav-logo-wrap local-scroll"><a href="<c:url value="/products"/>">Voyages Inc.</a></div>
@@ -166,7 +128,7 @@
           <div class="inner-nav desktop-nav">
             <ul class="clearlist">
               <!-- Item With Sub-->
-              <li><a href="index.html" class="mn-has-sub active">Voyages <i class="fa fa-angle-down button_open"></i></a>
+              <li><a href="index.html" class="mn-has-sub active">Home <i class="fa fa-angle-down button_open"></i></a>
                 <ul class="mn-sub">
                   <li class="active"><a href="index.html">Standart Slider</a></li>
                   <li><a href="index-search.html">Main Search</a></li>
@@ -175,17 +137,17 @@
                 </ul>
               </li>
               <!-- End Item With Sub-->
-              <!-- <li class="slash">/</li> -->
-              <!-- Item With Sub--
+              <li class="slash">/</li>
+              <!-- Item With Sub-->
               <li><a href="hotels-search.html" class="mn-has-sub">Hotels <i class="fa fa-angle-down button_open"></i></a>
-                <!-- Sub--
+                <!-- Sub-->
                 <ul class="mn-sub">
                   <li><a href="hotels-list.html">Hotels list</a></li>
                   <li><a href="hotels-search.html">Hotels search</a></li>
                   <li><a href="hotels-details.html">Hotels details</a></li>
                 </ul>
-                <!-- End Sub--
-              </li>-->
+                <!-- End Sub-->
+              </li>
               <!-- End Item With Sub-->
               <li class="slash">/</li>
               <!-- Item With Sub-->

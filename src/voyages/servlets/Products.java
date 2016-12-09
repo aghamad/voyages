@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -149,10 +150,17 @@ public class Products extends BaseServlet {
         List<ProductModel> initial_products = Collections.emptyList();
         String type = request.getParameter("type");
             
-        if(userCity == null)
+        if(userCity == null) {
             type = "all";
-        if(type == null)
+            
+        }
+        if(type == null) {
         	type = "relevant";
+        }
+        if(type.equals("all"))
+        	initial_products = productModel.getAll();
+        else if(type.equals("relevant"))
+        	initial_products = productModel.findByDepartureCity(userCity, new Date());
 
         List<ProductModel> vedettes = productModel.findVedettes();
         

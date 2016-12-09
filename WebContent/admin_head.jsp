@@ -1,6 +1,6 @@
-<div class="row-offcanvas row-offcanvas-left">
-<div id="sidebar" class="sidebar-offcanvas">
-      <div class="col-md-12">
+<div class="row">
+<div id="sidebar" class=" col-md-3 sidebar-offcanvas">
+      <div class="">
         <h3>Administration</h3>
         <ul class="nav nav-pills nav-stacked">
           <li class="active">
@@ -12,4 +12,4 @@
         </ul>
       </div>
   </div>
-        <div id=main>
+        <div id="main">

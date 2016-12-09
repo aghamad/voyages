@@ -3,6 +3,7 @@ package voyages.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import exceptions.ConnexionException;
@@ -12,6 +13,7 @@ import voyages.models.implementations.User;
 /**
  * Servlet implementation class ClientList
  */
+
 public class ClientList extends AdminServlet {
     private static final long serialVersionUID = 1L;
 
@@ -39,15 +41,17 @@ public class ClientList extends AdminServlet {
         User model;
         try {
             model = new User(getConnexion());
-            request.setAttribute("users",
-                model.getAll());
+            request.setAttribute("clients",
+                model.getClients());
         } catch(
             ConnexionException
             | DAOException e) {
             throw new ServletException(e);
         }
+        
+        
 
-        request.getRequestDispatcher("/clients.jsp").forward(request,
+        request.getRequestDispatcher("/admin_clients.jsp").forward(request,
             response);
     }
 
@@ -64,15 +68,15 @@ public class ClientList extends AdminServlet {
         User model;
         try {
             model = new User(getConnexion());
-            request.setAttribute("users",
-                model.getAll());
+            request.setAttribute("clients",
+                model.getClients());
         } catch(
             ConnexionException
             | DAOException e) {
             throw new ServletException(e);
         }
 
-        request.getRequestDispatcher("/clients.jsp").forward(request,
+        request.getRequestDispatcher("/admin_clients.jsp").forward(request,
             response);
     }
 

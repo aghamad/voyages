@@ -9,12 +9,12 @@
 <%@ include file="head.jsp" %>
     <div class=container>
     <div class="list-group">
-    <c:forEach items="${clients}" var="client">
+    <c:forEach items="${products}" var="voyage">
     <div class="list-group-item">
     
 	
 	
-	<a href="<c:url value='/client/detail?id=${client.id}'/>">${client.firstName} ${client.lastName }</a>
+	${voyage.nom}
 	
 	</div>
 	</c:forEach>

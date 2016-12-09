@@ -5,9 +5,7 @@
 package voyages.braintree;
 
 import java.math.BigDecimal;
-import com.braintreegateway.Address;
 import com.braintreegateway.BraintreeGateway;
-import com.braintreegateway.Customer;
 import com.braintreegateway.Environment;
 import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
@@ -29,16 +27,10 @@ public class Gateway {
     }
 
     public static Result<Transaction> DoTransaction(String nonce,
-        Customer customer,
-        Address address,
         BigDecimal amount) {
-        return gateway.transaction()
-            .sale(new TransactionRequest().amount(amount).paymentMethodNonce(nonce).customer().id(customer.getId()).firstName(customer.getFirstName())
-                .lastName(customer.getLastName()).company(customer.getCompany()).phone(customer.getPhone()).fax(customer.getFax())
-                .website(customer.getWebsite()).email(customer.getEmail()).done().billingAddress().firstName(address.getFirstName())
-                .lastName(address.getLastName()).company(address.getCompany()).streetAddress(address.getStreetAddress())
-                .extendedAddress(address.getExtendedAddress()).locality(address.getLocality()).region(address.getRegion()).postalCode(address.getPostalCode())
-                .countryCodeAlpha2(address.getCountryCodeAlpha2()).countryCodeAlpha3(address.getCountryCodeAlpha3()).done().options()
-                .submitForSettlement(Boolean.TRUE).done());
+        TransactionRequest request = new TransactionRequest().amount(amount).paymentMethodNonce(nonce).orderId("Mapped to PayPal Invoice Number").options()
+            .paypal().customField("PayPal custom field").description("Description for PayPal email receipt").done().storeInVaultOnSuccess(Boolean.TRUE).done();
+
+        return gateway.transaction().sale(request);
     }
 }

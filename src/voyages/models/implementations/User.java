@@ -35,7 +35,9 @@ public class User implements IModel {
     private static String GET_USERS = "SELECT "
         + columns
         + " FROM Users";
-
+    private static String GET_CLIENTS = "SELECT "
+            + columns
+            + " FROM Users WHERE IsAdmin = 0";
     private static String GET_BY_ID = "SELECT "
         + columns
         + " FROM Users WHERE id = ?";
@@ -176,6 +178,26 @@ public class User implements IModel {
             PreparedStatement getAllStatement;
 
             getAllStatement = getConnexion().getConnection().prepareStatement(User.GET_USERS);
+
+            try(
+                ResultSet result = getAllStatement.executeQuery()) {
+
+                while(result.next()) {
+                    users.add(extract(result));
+                }
+
+                return users;
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+    public List<User> getClients() throws DAOException {
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement getAllStatement;
+
+            getAllStatement = getConnexion().getConnection().prepareStatement(User.GET_CLIENTS);
 
             try(
                 ResultSet result = getAllStatement.executeQuery()) {

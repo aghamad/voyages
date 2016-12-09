@@ -7,7 +7,7 @@
 <%@ page import = "java.io.File" %>
 <%@ page import = "java.util.Arrays" %>
 <%@ page import = "voyages.models.implementations.*" %>
-<%@ include file="head.jsp" %>
+<%@ include file="partial-head.html" %>
 
     <%
     boolean loginFail = false;
@@ -51,4 +51,4 @@
         </div>
         </div>
 
-<%@ include file="foot.jsp" %>
+<%@ include file="partial-foot.html" %>

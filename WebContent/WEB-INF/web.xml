@@ -49,7 +49,10 @@
     <servlet-name>ClientList</servlet-name>
     <servlet-class>voyages.servlets.ClientList</servlet-class>
   </servlet>
-  
+    <servlet>
+    <servlet-name>VoyageList</servlet-name>
+    <servlet-class>voyages.servlets.VoyageList</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Products</servlet-name>
     <url-pattern>/products</url-pattern>
@@ -64,6 +67,10 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ClientList</servlet-name>
+    <url-pattern>/admin/client</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>VoyageList</servlet-name>
     <url-pattern>/admin/client</url-pattern>
   </servlet-mapping>
   <servlet>

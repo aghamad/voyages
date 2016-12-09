@@ -87,15 +87,15 @@
 				</div>
 			</div>
 		</td>
-		<td data-th="Price"><%=
+		<td data-th="Prix"><%=
 		caddy.getItems().get(i).getProduct().Price
 		%>
 		</td>
 		
-		<td data-th="Quantity">
+		<td data-th="Passagers">
 			<input type="number" name="itemQuantity.<%= caddy.getItems().get(i).getProduct().ProductId %>" class="form-control text-center" value="<%= caddy.getItems().get(i).getQuantity() %>">
 		</td>
-		<td data-th="Subtotal" class="text-center"><%=
+		<td data-th="Sous-total" class="text-center"><%=
 		caddy.getItems().get(i).getProduct().Price * caddy.getItems().get(i).getQuantity()
 		%></td>
 		<td class="actions" data-th="">
@@ -119,7 +119,7 @@
 							<td colspan="2" class="hidden-xs"></td>
 							<td class="hidden-xs text-center"><strong>Total $<%= total %></strong></td>
 							<td>
-                                                        <form action='<c:url value="checkout"/>' method="post">
+                                                        <form action='<c:url value="checkout"/>' method="get">
                                                         <button type=submit  class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></button>
                                                         </form>
                                                         </td>

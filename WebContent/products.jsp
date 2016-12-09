@@ -18,22 +18,7 @@
 
 <%@ include file="head.jsp" %>
 
-  
-    <div class="content-body">
 
-	    <c:if test='${type == "relevant"} '>>
-	    	<a href="?type=all">Afficher tous les voyages</a>
-	    </c:if>
-	    <c:if test='${type == "all"} '>
-	    	<a href="?type=relevant">Afficher seulement les voyages qui partent de votre ville : ${userCity.name} </a>
-	    </c:if>
-	    
-	  
-		<c:if test="${addedProduct != null}">
-			<div class="alert alert-success">
-				'${addedProduct.name}' ajouté  votre panier !
-			</div>
-	    </c:if>
 
         
 		<c:if test="${fn:length(vedettes) gt 0}">
@@ -75,9 +60,9 @@
 				              
 				              <!-- 
 		                    <h1>${vedette.Name}></h1>
-		                    <p>${vedette.Description}</p>
+		                    <p>${vedette.description}</p>
 		                    <p>
-		                    <b>${vedette.Price} $</b> seulement <br/>
+		                    <b>${vedette.price} $</b> seulement <br/>
 		                    <form method=post>
 		                                    <input type=hidden name=action value=addtocart />
 		                                    <input type=hidden name=productCode value="${vedette.productId}" />
@@ -129,21 +114,43 @@
         </div>
 		    </div>
 		</c:if>
+		
 		  <!--  END BANNER -->
-
-
+		  
+	<div class=container>
+		<br/>
+	    <c:if test='${type == "relevant"}'>
+	    	<a href="?type=all" class="really_big big_butt" style="">Afficher tous les voyages</a>
+	    </c:if>
+	    <c:if test='${type == "all"}'>
+	    	<a href="?type=relevant"  class="really_big big_butt">Afficher seulement les voyages qui partent de votre ville : ${userCity.name} </a>
+	    </c:if>
+	    
+	  
+		<c:if test="${addedProduct != null}">
+			<div class="alert alert-success">
+				'${addedProduct.name}' ajouté  votre panier !
+			</div>
+	    </c:if>
+	</div>
+	
     <c:if test="${fn:length(products) gt 0}">
         <br/>
-    
     <!-- page section-->
       <section class="page-section pb-0">
         <div class="container">
           <div class="row">
             <div class="col-md-8">
               <h6 class="title-section-top font-4">Special offers</h6>
-              <h2 class="title-section"><span>Popular</span> Destinations</h2>
+              <h2 class="title-section">Destinations <span>Populaires</span>
+              
+              	<c:if test='${type == "relevant"}'>de ${userCity.name}</c:if>
+              	<c:if test='${type == "all"}'>dans le monde</c:if>
+              </h2>
               <div class="cws_divider mb-25 mt-5"></div>
-              <p>Nullam ac dolor id nulla finibus pharetra. Sed sed placerat mauris. Pellentesque lacinia imperdiet interdum. Ut nec nulla in purus consequat lobortis. Mauris lobortis a nibh sed convallis.</p>
+              	<p>
+              		Nos clients adorent notre sélection de destinations intelligentes et adaptées à leur goûts.
+				</p>
             </div>
             <div class="col-md-4"><img src="http://html.creaws.com/suntour/pic/promo-1.png" data-at2x="http://html.creaws.com/suntour/pic/promo-1@2x.png" alt class="mt-md-0 mt-minus-70"></div>
           </div>
@@ -157,7 +164,7 @@
               	src="images/${product.image}"
               	data-at2x="http://html.creaws.com/suntour/pic/tours/1@2x.jpg" alt>
                 <div class="features-info-top">
-                  <div class="info-price font-4"><span>start per night</span> ${product.price}</div>
+                  <div class="info-price font-4"><span>start per person</span> ${product.price}</div>
                   <div class="info-temp font-4"><span>local temperature</span> 30° / 86°</div>
                   <p class="info-text">${product.description}.</p>
                 </div>
@@ -177,11 +184,11 @@
                     <h4 class="group inner list-group-item-heading">
                         ${product.name} - ${product.productId}</h4>
                     <p class="group inner list-group-item-text">
-                        ${product.Description}</p>
+                        ${product.description}</p>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <p class="lead">
-                                ${product.Price}
+                                ${product.price}
                                 </p>
                         </div>
                         <div class="col-xs-12 col-md-6">
@@ -209,5 +216,5 @@
         </div>
         </section>
         </c:if>
-    </div>
+
 <%@ include file="foot.jsp" %>
