@@ -2,6 +2,7 @@ package voyages.servlets;
 
 import java.io.IOException;
 import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,25 +13,26 @@ import exceptions.DAOException;
 import voyages.models.implementations.ProductModel;
 
 /**
- * Servlet implementation class VoyageList
+ * Servlet implementation class Ajout d'un voyage
  */
-
+@WebServlet(
+    name = "VoyageList",
+    urlPatterns = {"/admin/voyages"})
 public class VoyageList extends AdminServlet implements Servlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public VoyageList() {
-        super();
+    private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		ProductModel model = null;
-		super.doGet(request, response);
 		try {
 			model = new ProductModel(getConnexion());
 		} catch (ConnexionException e) {
@@ -51,16 +53,31 @@ public class VoyageList extends AdminServlet implements Servlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.doPost(request, response);
 		ProductModel productModel = null;
-		try {
-			productModel = new ProductModel(getConnexion());
-		} catch (ConnexionException e) {
-			throw new ServletException(e);
-		}
-        String action = request.getParameter("action");
+		long id = 0;
+		
+    	try {
+    		id = Long.parseLong(request.getParameter("productCode"));
+    	} catch(NumberFormatException e) {
+    		throw new ServletException(e);
+    	}
+    	
+        if(id == 0) {
+            throw new ServletException("no id given");
+        }
+        try {
+        	productModel = new ProductModel(getConnexion());
+
+        	productModel.ProductId = id;
+        	productModel.read();
+        } catch(
+            ConnexionException
+            | DAOException e) {
+            throw new ServletException(e);
+        }
+        // String action = request.getParameter("action");
  
-		if(action.equals("sponsor")) {
+		//if(action.equals("sponsor")) {
 	            productModel.IsVedette = 1;
 	            try {
 	                productModel.bulk_unvedette();
@@ -72,7 +89,7 @@ public class VoyageList extends AdminServlet implements Servlet {
 	            } catch(DAOException e) {
 	                throw new ServletException(e);
 	            }
-	        }
+	   //}
 	        
 		doGet(request, response);
 	}
